@@ -1,0 +1,24 @@
+{
+  "name": "eat-different",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "probe:all": "tsx execution/probes/probe-all.ts",
+    "probe:square": "tsx execution/probes/probe-all.ts square",
+    "probe:supabase": "tsx execution/probes/probe-all.ts supabase",
+    "probe:resend": "tsx execution/probes/probe-all.ts resend",
+    "probe:resend:send": "tsx execution/probes/probe-all.ts resend --send",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.117.0",
+    "resend": "^6.28.1",
+    "square": "^46.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^24.13.6",
+    "dotenv": "^18.0.3",
+    "tsx": "^4.23.15",
+    "typescript": "^5"
+  }
+}
