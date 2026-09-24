@@ -33,7 +33,9 @@ the truck-fund tracker ($5/order, 100% of donations, $42,000 goal, public % only
 - [x] `npm run probe:square` ✅ (2026-09-23)
 - [x] Supabase schema migration applied, `npm run probe:supabase` ✅ (2026-09-23)
 - [x] `npm run probe:resend` ✅ + `probe:resend:send` ✅ sent + arrival confirmed (2026-09-23)
-- [ ] **Phase T blocker:** pick permanent alert inbox (verified domain vs owner's Resend account) — D14
+- [ ] **Phase T blocker:** pick permanent alert inbox (verified domain vs owner's Resend account) — D14.
+      Owner wants `OWNER_EMAIL` switched back to the address originally entered (owner will supply
+      it); keep jared.key87@gmail.com until that address can actually receive Resend mail.
 - [x] Vercel: `https://eat-different.vercel.app` returns 200 → `npm run probe:vercel` ✅
 - [x] All results logged in progress.md → Phase A unlocked
 
