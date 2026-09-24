@@ -21,11 +21,25 @@
 - `redirect_url` on the payment link sends the buyer to our page after paying instead of
   Square's default confirmation.
 
-### To verify in Phase L (open)
-- [ ] Does `payment.updated` carry `buyer_email_address` and `receipt_number`? (reviews depend on it)
-- [ ] Sold-out status location: `item_variation_data.location_overrides[].sold_out`?
-- [ ] Does `order.metadata.kind` survive to the webhook / RetrieveOrder?
+### Open questions (carried into Phase A)
+- [ ] Does a **hosted-checkout** payment carry `buyer_email_address` and `receipt_number`?
+      (reviews depend on it) — needs one sandbox payment through the hosted page.
+- [x] Sold-out status: `itemVariationData.locationOverrides[].soldOut` (SDK types, 2026-09-23).
+- [x] `order.metadata.kind` survives on the Square order (RetrieveOrder, 2026-09-23). Routing
+      doesn't depend on it anyway — the webhook looks the order up in our own `orders` table.
 - [ ] Square seller terms: OK for a for-profit seller to take "support the business" payments?
+
+### Verified in Phase A (2026-09-23, sandbox)
+- Payment link with full `order` + PICKUP/ASAP fulfillment is accepted; Square's total matched
+  `priceCart` exactly ($32.00 for Burger+combo+2×bacon + Sweet Heat/Classic).
+- Order state is **DRAFT** until paid; `recipient.displayName` and pickup `note` are stored.
+- **Square auto-adds a `DIGITAL` fulfillment** to payment-link orders sent without one
+  (our donations). Documented in `architecture/donations.md`.
+- `redirectUrl` + `allowTipping` are stored on the payment link as sent.
+- Next dev/Vercel request logs include the full `/order/<token>` path → page needs
+  `Referrer-Policy: no-referrer` (SOP updated).
+- **All test data lives in the same Supabase project production will use.** Test orders, ledger
+  rows, reviews, signups must be wiped before launch (Phase T checklist).
 - [x] `square` npm SDK **46.0.0** (Square-Version 2026-09-16):
       `new SquareClient({ token, environment: SquareEnvironment.Sandbox })`;
       `client.locations.list()` → `{ locations }`; `client.catalog.list({ types })` → async Page.

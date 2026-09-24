@@ -12,7 +12,7 @@ Built under the **B.L.A.S.T.** protocol (Blueprint → Link → Architect → St
 | Protocol 0 — Init | ✅ Done 2026-09-22 |
 | B — Blueprint | ✅ Approved 2026-09-22 |
 | L — Link | ✅ All 4 links green 2026-09-23 (`npm run probe:all`) |
-| A — Architect | 🔓 Next |
+| A — Architect | 🔨 Nearly done — 53 tests ✅, build ✅; needs 1 sandbox payment test + admin login test |
 | S — Stylize | 🔒 |
 | T — Trigger | 🔒 |
 
@@ -31,8 +31,9 @@ reference/         owner-supplied inputs (menu.jpg, inspiration). Read-only.
 ```
 
 ## Stack
-Next.js (App Router, TypeScript) on Vercel · Tailwind + GSAP · Supabase (Postgres + Auth) ·
+Next.js (App Router, TypeScript) on Vercel · Tailwind + GSAP · Supabase (Postgres) ·
 Square (Catalog, Checkout payment links, Orders, webhooks) · Resend (email) · Vitest · zod.
+Admin login: one owner-set password + signed cookie (D24).
 Square **Sandbox** for all development; production keys only in Phase T.
 
 ## Phase B — Blueprint (approved)
@@ -49,13 +50,18 @@ Square **Sandbox** for all development; production keys only in Phase T.
 1. **Brand:** always "Eat. Different." (both periods) or "E.D." — never "Eat Difference".
 2. **Server re-prices every cart** from the Square Catalog. Client-sent prices are ignored.
 3. **Home pickup address is never public.** Stored only in `settings` (service-role only). Shown
-   only on `/order/[id]?t=token` after the server confirms with Square the payment is COMPLETED.
+   only on `/order/<token>` (unguessable 32-byte token; only its SHA-256 hash is stored) after
+   the server confirms with Square the payment is COMPLETED.
 4. **Kitchen Open toggle** off → food checkout returns HTTP 409, menu is view-only, notify-me
    signup shown. **Donations stay open either way.**
 5. **Truck fund:**
+   - **Only orders created by this website count.** Payments for any other Square order
+     (in-person/POS) are ignored.
    - Paid food order → ledger `+fund_per_order_cents` as of payment time (default 500).
    - Paid donation → ledger `+100%` of the donated amount.
-   - Refund → ledger row subtracting exactly what the original row added.
+   - Tips never count.
+   - **Only a full refund** (`refunded_money ≥ amount_money`, tip excluded) adds a row
+     subtracting exactly what the original row added. Partial refunds change nothing.
    - `UNIQUE(square_order_id, reason)` — webhook replays never double-count.
    - Public progress = `floor(sum / goal × 1000) / 10` %, clamped 0–100. Goal = 4,200,000 cents
      ($42,000), stored privately.
@@ -66,6 +72,8 @@ Square **Sandbox** for all development; production keys only in Phase T.
    a PAID food order). One per order, published immediately. Owner may hide spam/abuse only —
    **never hide for a low rating**. The Google review link is shown to **every** reviewer
    (no review gating — FTC rule + Google policy).
+7b. **Checkout money:** no sales tax (for now). Tips allowed on food checkout only, never on
+    donations. Pickup is ASAP — no time slots.
 8. **Square webhooks:** verify `x-square-hmacsha256-signature` before any processing; store
    `event_id` uniquely (idempotent).
 9. **Look & feel:** follows the menu art — near-black, amber/gold brush strokes, cream brushed
@@ -82,7 +90,8 @@ Square **Sandbox** for all development; production keys only in Phase T.
 { "variationId": "str", "itemId": "str", "name": "The Sweet Heat",
   "subtitle": "Hot Honey Chicken + Waffle", "description": "Crispy chicken · Hot honey · …",
   "priceCents": 1200, "imageUrl": "str|null",
-  "category": "WAFFLES|BURGERS|BOWLS|DIRTY_EATS", "soldOut": false,
+  "category": "Waffles",              // Square category name (owner may add more)
+  "soldOut": false,
   "modifierLists": [{ "id": "str", "name": "Choose your waffle",
                       "selection": "SINGLE|MULTIPLE", "required": true,
                       "maxQtyPerOption": 1,           // Add-ons list = 3
@@ -109,7 +118,7 @@ Square **Sandbox** for all development; production keys only in Phase T.
   "body": "str(10–1000)" }
 
 // OwnerAlertEmail → OWNER_EMAIL
-//   food:     "🔥 New order #{receipt}: ${total}"  — customer, items × qty + modifiers, note, Square link
+//   food:     "🔥 New order #{receipt}: ${total}"  — customer, items × qty + modifiers, note, "Open Square → Orders" (no Square URLs)
 //   donation: "🚚 Truck fund donation: ${amount}"
 ```
 
@@ -152,3 +161,13 @@ settings (1 row) kitchen_open, fund_per_order_cents=500, fund_goal_cents=4200000
 
 ## Maintenance Log
 _Finalized in Phase T._
+
+<!-- BEGIN:nextjs-agent-rules -->
+
+# This is NOT the Next.js you know
+
+This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notices.
+
+This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
+
+<!-- END:nextjs-agent-rules -->

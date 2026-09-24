@@ -37,24 +37,31 @@ the truck-fund tracker ($5/order, 100% of donations, $42,000 goal, public % only
 - [x] Vercel: `https://eat-different.vercel.app` returns 200 → `npm run probe:vercel` ✅
 - [x] All results logged in progress.md → Phase A unlocked
 
-## Phase A — Architect 🔓 (next)
-- [ ] Verify open Square questions from findings.md during the first Sandbox checkout — they
-      need a real payment event, so they couldn't be checked in Phase L: buyer email +
-      receipt_number on payment.updated, sold_out location, metadata survives, Square ToS on
-      support payments. Update SOPs before dependent code.
-- [ ] SOPs (write BEFORE each tool): menu-sync, checkout, donations, square-webhook, truck-fund,
-      reviews, kitchen-toggle, notify-list, owner-alert-email, crop-menu
-- [ ] Next.js scaffold + Tailwind + Vitest + zod
-- [ ] Tools: seedCatalog, getMenu, priceCart, createCheckout, createDonationCheckout,
-      verifyWebhook, recordPayment, recordRefund, computeProgress, verifyBuyer, submitReview,
-      sendOwnerAlert, sendOpenAlert, cropMenu
-- [ ] Navigation: /api/checkout, /api/donate, /api/webhooks/square, /api/fund, /api/reviews,
-      /api/notify, /admin server actions
-- [ ] `npm test` green (see Verification below)
+## Phase A — Architect 🔨 (in progress)
+- [x] Money-rule decisions D15–D19 from owner (fund scope, tax, tips, refunds, pickup)
+- [x] SOPs: menu-sync, checkout, donations, square-webhook, truck-fund, reviews, notify-list,
+      owner-alert-email (crop-menu moves to Phase S — needs `reference/menu.jpg`)
+- [x] SOP: admin.md (password login D24; kitchen toggle, settings, hide review, open alert)
+- [x] Next.js 16 scaffold + Tailwind 4 + Vitest 5 + zod 4; `next build` ✅
+- [x] Tools: seedCatalog, getMenu, priceCart, createCheckout, createDonationCheckout,
+      verifyWebhook, parseSquareEvent, recordPayment, recordRefund, completePayment,
+      getOrderView, computeProgress, submitReview, listReviews, subscribe/unsubscribe,
+      sendOwnerAlert, sendOpenAlert
+- [x] Navigation: /api/menu, /api/checkout, /api/donate, /api/webhooks/square, /api/fund,
+      /api/reviews, /api/notify, /api/notify/unsubscribe, /api/order/[token]
+- [x] Navigation: /admin + /admin/login + server actions (functional; styled in Phase S)
+- [ ] Live admin login test — needs owner to set ADMIN_PASSWORD in .env
+- [x] `npm test` 53/53 ✅; `next build` ✅ (all admin/api routes dynamic); sandbox catalog seeded (idempotent); live route checks ✅
+- [x] Verified in sandbox: sold_out location, metadata survives, PICKUP/ASAP accepted, totals match
+- [ ] **One hosted-checkout sandbox payment** (owner enters Square's test card) → verify
+      buyer_email + receipt_number arrive, order PAID, ledger +500, fund %, owner alert email,
+      pickup shown only after payment. Then a $10 donation payment → ledger +1000.
+- [ ] Square seller terms re: "support the business" payments (owner to confirm)
 
 ## Phase S — Stylize 🔒
 - [ ] `architecture/design-direction.md` from menu art + inspiration → owner sign-off
-- [ ] Pages: /, /menu, /order/[id], /donate/thanks, /reviews, /admin
+- [ ] Pages: /, /menu, /order/[token] (`Referrer-Policy: no-referrer`), /donate/thanks, /reviews, /admin
+- [ ] SOP + tool: crop-menu (needs `reference/menu.jpg`)
 - [ ] Interactive: tracker (smoker gauge or rolling truck), sizzling menu cards, flame burst, smoke parallax
 - [ ] Branded owner-alert emails
 - [ ] Screenshots desktop + 375px mobile + reduced-motion → owner sign-off
@@ -63,6 +70,8 @@ the truck-fund tracker ($5/order, 100% of donations, $42,000 goal, public % only
 - [ ] Deploy to Vercel (owner enters env vars in dashboard)
 - [ ] Register Square webhook (payment.updated, refund.updated)
 - [ ] Sandbox E2E: food order + $10 donation (owner enters test card)
+- [ ] **Wipe test data** from Supabase (orders, fund_ledger, reviews, notify_signups,
+      webhook_events; reset settings) — dev and prod share one project
 - [ ] Owner sign-off → production keys → seed production catalog
 - [ ] First real order + donation land → **Complete**
 - [ ] Finalize Triggers + Maintenance Log in CLAUDE.md

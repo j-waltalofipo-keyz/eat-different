@@ -55,3 +55,37 @@
   - Added `probe-vercel.ts` + `SITE_URL` (in .env.example and appended to .env).
 - **PHASE L COMPLETE ✅** `npm run probe:all` → square ✅ supabase ✅ resend ✅ vercel ✅, exit 0.
   Phase A unlocked.
+
+### Phase A — session 1 (2026-09-23)
+- Owner decisions D15–D19 (website-only fund, no tax, tips on food only, full refunds only,
+  ASAP pickup); technical decisions D20–D23.
+- SOPs written first: menu-sync, checkout, donations, square-webhook, truck-fund, reviews,
+  notify-list, owner-alert-email.
+- Next.js 16.3.6 / React 19.3 / Tailwind 4.3 / zod 4.6 / Vitest 5.0 scaffold → `next build` ✅.
+- Tools in `execution/` (lib, schemas, settings, square/*, orders/*, fund/*, reviews/*,
+  notify/*, email/*) + routes in `app/api/*`. `tsc` ✅.
+- `npm run seed:catalog` → Sandbox catalog: 6 items, 3 modifier lists, 4 categories.
+  - Bug 1: "-15 updated" — Square counts nested variations/modifiers in idMappings. Fixed:
+    count top-level objects by temp id. Bug 2: modifier list order lost. Fixed: `ordinal`.
+  - Re-runs → `0 created, 13 updated`, still 6 items (idempotent ✅).
+- Migration `002_fund_total` (security-invoker view, anon/authenticated revoked) → advisors: only
+  the expected INFO lint.
+- `npm test` → **47/47 ✅** (priceCart rules incl. $20.00 case, fund math, refunds, webhook
+  signature, event parsing, reviews matching, kitchen gate, pickup guard, emails, links).
+  `tsc` caught `LinkRequest` possibly-undefined in tests → `NonNullable<…>` fix.
+- Live routes on `next dev` against sandbox: menu 200; checkout closed 409; bad input 400;
+  donation $0.50 422; fund 0%; reviews empty; bad review 422; bad token 404; forged unsub 400.
+- Opened kitchen via SQL → real sandbox checkout ($32.00, PICKUP/ASAP, metadata FOOD, tips on)
+  + $10 donation link; order view → PENDING, `pickup: null` ✅. Kitchen closed again.
+- Pending: admin auth decision; one hosted-checkout sandbox payment (owner enters test card) to
+  verify buyer_email/receipt_number, payment recording, ledger, owner alert.
+- Owner chose **password admin login** (D24). SOP `architecture/admin.md` written first.
+  Tools: `execution/admin/{session,adminData,settingsForm}.ts`; Navigation: `app/admin/{auth,actions}.ts`,
+  `forms.tsx`, `page.tsx`, `login/page.tsx` (functional, unstyled until Phase S).
+  `ADMIN_PASSWORD` added to env schema (optional, ≥12) + empty line in `.env` for the owner.
+- `npm test` → **53/53 ✅** (+ admin session expiry/tamper/password-change, settings form parsing).
+- Live: `/admin` without or with forged cookie → 307 to `/admin/login`; login page renders.
+- **Bug found by `next build`:** `/admin` + `/admin/login` prerendered ○ static — with the password
+  unset, `isAdmin()` returned before touching cookies, so a redirect got baked in.
+  Analyze → Patch (read cookie first + `dynamic = "force-dynamic"`) → Test (`next build`: all
+  admin/api routes ƒ) → Architecture (lesson added to admin.md).

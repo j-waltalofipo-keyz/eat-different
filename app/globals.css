@@ -1,0 +1,13 @@
+@import "tailwindcss";
+
+/* Palette from the E.D. menu art. Refined in Phase S (architecture/design-direction.md). */
+@theme {
+  --color-ink: #0b0b0b;
+  --color-gold: #f5b21a;
+  --color-cream: #f3ead8;
+}
+
+body {
+  background: var(--color-ink);
+  color: var(--color-cream);
+}
