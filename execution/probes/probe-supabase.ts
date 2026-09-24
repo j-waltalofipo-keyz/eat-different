@@ -4,6 +4,9 @@ import { requireEnv } from "./lib";
 
 export async function probeSupabase(): Promise<string> {
   const env = requireEnv("SUPABASE_URL", "SUPABASE_ANON_KEY", "SUPABASE_SERVICE_ROLE_KEY");
+  if (!/^https:\/\/[a-z0-9]+\.supabase\.co\/?$/.test(env.SUPABASE_URL)) {
+    throw new Error("SUPABASE_URL must be the API URL https://<project-ref>.supabase.co (not the dashboard page URL)");
+  }
   const admin = createClient(env.SUPABASE_URL, env.SUPABASE_SERVICE_ROLE_KEY, {
     auth: { persistSession: false },
   });

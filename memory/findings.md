@@ -26,7 +26,18 @@
 - [ ] Sold-out status location: `item_variation_data.location_overrides[].sold_out`?
 - [ ] Does `order.metadata.kind` survive to the webhook / RetrieveOrder?
 - [ ] Square seller terms: OK for a for-profit seller to take "support the business" payments?
-- [ ] Current `square` npm SDK major version + client API shape.
+- [x] `square` npm SDK **46.0.0** (Square-Version 2026-09-16):
+      `new SquareClient({ token, environment: SquareEnvironment.Sandbox })`;
+      `client.locations.list()` → `{ locations }`; `client.catalog.list({ types })` → async Page.
+- Sandbox default location is named "Default Test Account".
+
+## Supabase
+- Project **"E.D."**, ref `vrmdkvvydasazvcswdca`, region ca-central-1, Postgres 17.
+- API URL is `https://<ref>.supabase.co` — NOT the dashboard URL
+  (`supabase.com/dashboard/project/<ref>`). Easy mistake; the probe now catches it.
+- Keys: new style `sb_publishable_…` / `sb_secret_…`, or legacy JWT anon / service_role
+  (`eyJ…`). supabase-js 2.117 accepts either. Owner is using legacy keys.
+- Advisor lint `0008_rls_enabled_no_policy` (INFO) is expected with our deny-all RLS design.
 
 ## Resend
 - Free tier ~3,000 emails/month. Before a sending domain is verified, the test sender can only

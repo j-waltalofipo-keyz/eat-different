@@ -25,13 +25,13 @@ the truck-fund tracker ($5/order, 100% of donations, $42,000 goal, public % only
 
 ## Phase L — Link ⏳
 - [ ] Owner creates keys and pastes into `.env`:
-  - [ ] Square Sandbox: `SQUARE_ACCESS_TOKEN`, `SQUARE_APPLICATION_ID`, `SQUARE_LOCATION_ID`
-  - [ ] Supabase: `SUPABASE_URL`, `SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`
+  - [x] Square Sandbox: `SQUARE_ACCESS_TOKEN`, `SQUARE_APPLICATION_ID`, `SQUARE_LOCATION_ID`
+  - [x] Supabase: `SUPABASE_URL`, `SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`
   - [ ] Resend: `RESEND_API_KEY`
   - [ ] `OWNER_EMAIL`
   - [ ] (later, once a webhook URL exists) `SQUARE_WEBHOOK_SIGNATURE_KEY`
-- [ ] `npm run probe:square` ✅
-- [ ] Supabase schema migration applied, `npm run probe:supabase` ✅
+- [x] `npm run probe:square` ✅ (2026-09-23)
+- [x] Supabase schema migration applied, `npm run probe:supabase` ✅ (2026-09-23)
 - [ ] `npm run probe:resend` ✅ (sends ONE email to OWNER_EMAIL — confirm before running)
 - [ ] Vercel hello-world preview returns 200 ✅
 - [ ] Verify open questions from findings.md (buyer email + receipt_number on payment.updated,
