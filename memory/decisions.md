@@ -26,3 +26,4 @@
 | D22 | 2026-09-23 | **Subtitle, image, add-on max qty come from `menu-seed.json`, matched by name** | Square has no field for them; prices/availability/modifiers still come only from Square. |
 | D23 | 2026-09-23 | **`APP_SECRET`** (random 32 bytes, server-only) signs unsubscribe links | Prevents anyone unsubscribing someone else's email. |
 | D24 | 2026-09-23 | **Admin login = one password** (`ADMIN_PASSWORD`, owner-set) + signed httpOnly cookie, 30 days. Replaces the planned Supabase magic link. Cookie key = HMAC(`APP_SECRET`, password) so changing the password logs everyone out. | Owner's choice: simplest, no Supabase Auth config, no extra package, no email dependency. Trade-off: shared password. |
+| D25 | 2026-09-23 | **Spell "Samoa" / "Samoan" plainly — no macron or other marks** (owner) | Owner's instruction; applies to all copy, SVG labels, and docs. The spelling question was removed from Eddie's review. |

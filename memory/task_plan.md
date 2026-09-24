@@ -39,7 +39,7 @@ the truck-fund tracker ($5/order, 100% of donations, $42,000 goal, public % only
 - [x] Vercel: `https://eat-different.vercel.app` returns 200 → `npm run probe:vercel` ✅
 - [x] All results logged in progress.md → Phase A unlocked
 
-## Phase A — Architect 🔨 (in progress)
+## Phase A — Architect ✅ (completed 2026-09-23)
 - [x] Money-rule decisions D15–D19 from owner (fund scope, tax, tips, refunds, pickup)
 - [x] SOPs: menu-sync, checkout, donations, square-webhook, truck-fund, reviews, notify-list,
       owner-alert-email (crop-menu moves to Phase S — needs `reference/menu.jpg`)
@@ -52,7 +52,9 @@ the truck-fund tracker ($5/order, 100% of donations, $42,000 goal, public % only
 - [x] Navigation: /api/menu, /api/checkout, /api/donate, /api/webhooks/square, /api/fund,
       /api/reviews, /api/notify, /api/notify/unsubscribe, /api/order/[token]
 - [x] Navigation: /admin + /admin/login + server actions (functional; styled in Phase S)
-- [ ] Live admin login test — needs owner to set ADMIN_PASSWORD in .env
+- [x] Live admin login ✅ (owner logged in; dashboard values verified read-only)
+- [x] Admin buttons live ✅ (kitchen open → close, API follows; invalid preset rejected, nothing saved)
+- [ ] Owner fills pickup address + instructions + Google review link in /admin before launch
 - [x] `npm test` 56/56 ✅; `next build` ✅ (all admin/api routes dynamic); sandbox catalog seeded (idempotent); live route checks ✅
 - [x] Verified in sandbox: sold_out location, metadata survives, PICKUP/ASAP accepted, totals match
 - [x] **One hosted-checkout sandbox payment** (owner entered Square's test card) → verified
@@ -61,8 +63,13 @@ the truck-fund tracker ($5/order, 100% of donations, $42,000 goal, public % only
       pickup shown only after payment; $10 donation → ledger +1000.
 - [ ] Square seller terms re: "support the business" payments (owner to confirm)
 
-## Phase S — Stylize 🔒
-- [ ] `architecture/design-direction.md` from menu art + inspiration → owner sign-off
+## Phase S — Stylize 🔓 (next)
+- [x] `architecture/design-direction.md` DRAFT from menu art + 6 inspiration sites
+- [x] `/concept` live prototype of the direction (logo reveal, hero, menu, truck road, 685→816, reviews)
+- [ ] **Owner sign-off** on direction + tracker option (A / A+C) + every Samoan cultural element (Eddie approves)
+- [ ] Eddie's story in his own words (for 685 → 816)
+- [x] Review page for Eddie published: https://claude.ai/artifact/BAFPKXgArVukrxKqC1D9GL (owner must share it)
+- [ ] Receive Eddie's copied answers + photos → apply to design-direction.md, then build pages
 - [ ] Pages: /, /menu, /order/[token] (`Referrer-Policy: no-referrer`), /donate/thanks, /reviews, /admin
 - [ ] SOP + tool: crop-menu (needs `reference/menu.jpg`)
 - [ ] Interactive: tracker (smoker gauge or rolling truck), sizzling menu cards, flame burst, smoke parallax

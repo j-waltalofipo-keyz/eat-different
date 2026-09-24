@@ -109,3 +109,52 @@
 - Test data now in Supabase: 2 PAID orders, 2 ledger rows, 1 review → wipe in Phase T.
 - Owner confirmed both owner alerts arrived in Gmail ("🔥 New order #nlTZ: $32.00",
   "🚚 Truck fund donation: $10.00") → alert delivery ✅ end to end.
+- Stale-server incident: TaskStop left the first `next dev` node process (PID 44188) on :3000;
+  new server hit EADDRINUSE while the old one answered. Verified PID command line → stopped it →
+  fresh server "Ready". (Tooling lesson, not app logic.)
+- **Admin login ✅** — owner set `ADMIN_PASSWORD` (13 chars; value never read) and logged in via
+  the browser pane. Dashboard (read-only check): kitchen CLOSED; fund "$15.00 of $42,000.00 —
+  public 0%"; notify list 0; 1 review with Hide button; settings prefilled $5.00 / $42,000.00 /
+  $1.00–$1,000.00 / presets 5,10,25,50; pickup address, instructions, Google link empty.
+- **Admin buttons ✅** (owner said "go ahead"): Open the kitchen → button flips, public
+  `/api/menu` kitchenOpen true; Close the kitchen → kitchenOpen false, `POST /api/checkout` 409.
+  Settings with preset $2,000 (> $1,000 max) → rejected "presets must be within min..max";
+  reload shows presets unchanged (5,10,25,50) and kitchen CLOSED — nothing saved.
+- **PHASE A COMPLETE ✅** (2026-09-23). Open owner items carried forward: Square seller terms
+  for support payments; fill pickup address/instructions + Google review link before launch.
+- Admin: logged-in dashboard and button tests done (see above). Phase A closed.
+
+### Phase S — session 1 (2026-09-23)
+- Owner brief: very clean, very different, very interactive; E.D. = Eddie (wordplay); logo must
+  accentuate the E and the D; Eddie is Samoan, lives in Kansas City — weave into interactions.
+- Studied 6 inspiration sites in the browser pane (banhmiworld.ca, therebelbites.co.uk,
+  fedupfoodtrucks.com, defoodtruckclub.nl, nope.ee/ice-cream, pizza-amici.nl) → takeaways in
+  `architecture/design-direction.md` §2.
+- Wrote `architecture/design-direction.md` (DRAFT for sign-off): logo, palette, type, Samoa×KC,
+  signature interactions, tracker decision, motion rules. Contrast measured with a script (my first
+  guesses were wrong: ink/gold is 10.6:1, not 11.4) → ember restricted to large text/non-text.
+- Fonts via next/font: Anton, Knewave, DM Sans (confirmed in Next's font data). GSAP 3.15 +
+  @gsap/react 2.1.
+- Built `/concept` (noindex): Logo reveal (E.D. → Eat. Different., "It's Eddie." wink), Hero
+  (pointer-tilt waffle illustration in a gold arch, rotating TALOFA·KC sticker), ticker,
+  siapo-inspired band, menu tabs + cards from menu-seed, Road to the Truck (option A demo slider,
+  coin-drop chip-in), "From 685 to 816" pinned scroll route, SAMPLE-labeled polaroid reviews, footer.
+- Issues found in the browser pane and fixed:
+  - Everything animated looked invisible → the tab was in the background (rAF paused). Fronted
+    the tab → animations run. (Not a bug; verification lesson.)
+  - Gold arch sat behind body text on mobile (cream on gold ≈1.6:1, unreadable) → arch now frames
+    only the dish.
+  - Truck collided with the KC skyline at phone width → smaller skyline on mobile, truck clamped.
+  - Duplicate SVG pattern ids from 3 siapo bands → unique `id` prop.
+  - Copy said "get a text" but the notify list is email → fixed.
+- Checks: tsc ✅, 56/56 ✅, `next build` ✅ (/concept static, admin/api dynamic).
+- Open for production: mobile layout for the 685 story cards (show one at a time); reduced-motion
+  verification; real dish photos (needs reference/menu.jpg); Eddie's story text.
+- Owner asked for a shareable link to collect Eddie's input. Artifact `db`/`assets` would make the
+  page organization-internal (outside viewers are view-only, can't write or upload) → built a
+  capability-free review page instead: concept highlights (logo reveal, palette/type, menu cards,
+  truck-road demo, 685→816 route) + 8-part questionnaire, draft kept in the viewer's browser,
+  "Copy my answers" → Eddie texts/emails answers + photos to Jared.
+  Published: https://claude.ai/artifact/BAFPKXgArVukrxKqC1D9GL (private until owner shares it).
+- Owner: spell "Samoa"/"Samoan" plainly, no macron (D25) → fixed in review page, /concept,
+  design-direction.md; removed the spelling question.

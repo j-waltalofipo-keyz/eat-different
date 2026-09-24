@@ -1,13 +1,27 @@
 @import "tailwindcss";
 
-/* Palette from the E.D. menu art. Refined in Phase S (architecture/design-direction.md). */
+/* Brand tokens — architecture/design-direction.md §4–5 */
 @theme {
   --color-ink: #0b0b0b;
   --color-gold: #f5b21a;
   --color-cream: #f3ead8;
+  --color-ember: #d7263d;
+  --color-pacific: #1b3fa0;
+}
+
+@theme inline {
+  --font-display: var(--font-anton), Impact, "Arial Narrow", sans-serif;
+  --font-brush: var(--font-knewave), "Brush Script MT", cursive;
+  --font-sans: var(--font-dm-sans), system-ui, sans-serif;
 }
 
 body {
   background: var(--color-ink);
   color: var(--color-cream);
+  font-family: var(--font-sans);
+}
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
 }
