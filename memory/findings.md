@@ -40,8 +40,11 @@
 - Advisor lint `0008_rls_enabled_no_policy` (INFO) is expected with our deny-all RLS design.
 
 ## Resend
-- Free tier ~3,000 emails/month. Before a sending domain is verified, the test sender can only
-  deliver to the account owner's own address → fine for owner alerts in v1. (verify in Phase L)
+- Free tier ~3,000 emails/month.
+- **Confirmed 2026-09-23:** without a verified domain, Resend returns 403 `validation_error` for
+  any recipient other than the Resend account's own address (currently jared.key87@gmail.com).
+  → Alerts to the E.D. owner's inbox need either a verified domain (requires owning one) or
+  the Resend account to be registered under the E.D. owner's email.
 
 ## Menu (from owner's menu image, 2026-09-22)
 - Full transcription → `architecture/menu-seed.json`. Rules → CLAUDE.md "Menu Rules".

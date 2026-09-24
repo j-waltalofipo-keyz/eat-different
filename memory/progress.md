@@ -37,4 +37,10 @@
   - Patch: probe-all uses `process.exitCode` instead of `process.exit()`.
   - Test: `tsc` clean; `npm run probe:all` ×3 → all ✅, exit 0 each time.
   - Architecture: lesson written to new SOP `architecture/link-probes.md`.
-  - Pending: owner OK to run `probe:resend:send` (one test email to OWNER_EMAIL).
+  - Owner said yes → `npm run probe:resend:send` → ❌ 403 `validation_error`: test sender only
+    delivers to the Resend account's own address (jared.key87@gmail.com); OWNER_EMAIL is a
+    different address. Nothing sent. Blueprint impact: alerts to anyone other than the Resend
+    account holder need a verified domain → decision pending with owner.
+  - Decision: test with jared.key87@gmail.com now; permanent alert inbox decided in Phase T.
+    Set `OWNER_EMAIL` line only → `probe:resend:send` ✅ sent, id
+    01a0d0de-61d9-7339-93c0-b16e4fd5883e, exit 0. Awaiting inbox confirmation.

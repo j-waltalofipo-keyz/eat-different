@@ -15,3 +15,4 @@
 | D11 | 2026-09-22 | **Vitest + zod** | Every tool validated at its boundary and unit-tested; fast. |
 | D12 | 2026-09-22 | **Combo = single optional modifier (+$5)**, drink of the day, no drink choice | Owner's choice; keeps checkout simple for a home kitchen. |
 | D13 | 2026-09-22 | **v1 photos cropped from menu graphic** | Owner's choice; replace with real photos later. |
+| D14 | 2026-09-23 | **Dev alerts go to jared.key87@gmail.com**; permanent E.D.-owner inbox decided in Phase T (buy + verify a domain, or owner's own Resend account) | Resend test sender only delivers to the account holder until a domain is verified. |
