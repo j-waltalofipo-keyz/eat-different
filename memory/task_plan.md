@@ -57,7 +57,7 @@ the truck-fund tracker ($5/order, 100% of donations, $42,000 goal, public % only
 - [x] Verified in sandbox: sold_out location, metadata survives, PICKUP/ASAP accepted, totals match
 - [x] **One hosted-checkout sandbox payment** (owner entered Square's test card) → verified
       receipt_number ✅; buyer_email ❌ on payment → fixed via pickup-recipient fallback; order PAID,
-      ledger +500, owner alert sent once, reviews end-to-end ✅,
+      ledger +500, owner alerts sent once + arrival confirmed by owner, reviews end-to-end ✅,
       pickup shown only after payment; $10 donation → ledger +1000.
 - [ ] Square seller terms re: "support the business" payments (owner to confirm)
 

@@ -107,3 +107,5 @@
     wrong email NOT_FOUND, donation receipt NOT_FOUND, real buyer ✅ (+ Google link),
     second → ALREADY_REVIEWED; public list exposes only displayName/rating/body/createdAt.
 - Test data now in Supabase: 2 PAID orders, 2 ledger rows, 1 review → wipe in Phase T.
+- Owner confirmed both owner alerts arrived in Gmail ("🔥 New order #nlTZ: $32.00",
+  "🚚 Truck fund donation: $10.00") → alert delivery ✅ end to end.
