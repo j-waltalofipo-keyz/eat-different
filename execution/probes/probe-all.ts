@@ -22,4 +22,6 @@ for (const name of names) {
   results.push(r);
 }
 saveResults(results);
-process.exit(results.every((r) => r.ok) ? 0 : 1);
+// exitCode, not process.exit(): exiting while fetch sockets are still closing crashes Node on
+// Windows (libuv assertion in src\win\async.c).
+process.exitCode = results.every((r) => r.ok) ? 0 : 1;

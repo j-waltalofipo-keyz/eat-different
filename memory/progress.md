@@ -30,3 +30,11 @@
   - Patched probe-supabase to reject non-API URLs with a clear message (self-annealing).
 - **Phase L — Supabase ✅** owner added service_role key → `npm run probe:supabase` →
   `schema ok · kitchen closed · RLS blocks anon`, exit 0.
+- **Phase L — Resend (key ✅):** `npm run probe:resend` → `key accepted`, but process then
+  crashed: `Assertion failed: !(handle->flags & UV_HANDLE_CLOSING), file src\win\async.c`,
+  exit -1073740791.
+  - Analyze: libuv/Windows crash from `process.exit()` while fetch sockets close; not a Resend issue.
+  - Patch: probe-all uses `process.exitCode` instead of `process.exit()`.
+  - Test: `tsc` clean; `npm run probe:all` ×3 → all ✅, exit 0 each time.
+  - Architecture: lesson written to new SOP `architecture/link-probes.md`.
+  - Pending: owner OK to run `probe:resend:send` (one test email to OWNER_EMAIL).
