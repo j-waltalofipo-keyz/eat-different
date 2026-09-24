@@ -53,11 +53,12 @@ the truck-fund tracker ($5/order, 100% of donations, $42,000 goal, public % only
       /api/reviews, /api/notify, /api/notify/unsubscribe, /api/order/[token]
 - [x] Navigation: /admin + /admin/login + server actions (functional; styled in Phase S)
 - [ ] Live admin login test — needs owner to set ADMIN_PASSWORD in .env
-- [x] `npm test` 53/53 ✅; `next build` ✅ (all admin/api routes dynamic); sandbox catalog seeded (idempotent); live route checks ✅
+- [x] `npm test` 56/56 ✅; `next build` ✅ (all admin/api routes dynamic); sandbox catalog seeded (idempotent); live route checks ✅
 - [x] Verified in sandbox: sold_out location, metadata survives, PICKUP/ASAP accepted, totals match
-- [ ] **One hosted-checkout sandbox payment** (owner enters Square's test card) → verify
-      buyer_email + receipt_number arrive, order PAID, ledger +500, fund %, owner alert email,
-      pickup shown only after payment. Then a $10 donation payment → ledger +1000.
+- [x] **One hosted-checkout sandbox payment** (owner entered Square's test card) → verified
+      receipt_number ✅; buyer_email ❌ on payment → fixed via pickup-recipient fallback; order PAID,
+      ledger +500, owner alert sent once, reviews end-to-end ✅,
+      pickup shown only after payment; $10 donation → ledger +1000.
 - [ ] Square seller terms re: "support the business" payments (owner to confirm)
 
 ## Phase S — Stylize 🔒

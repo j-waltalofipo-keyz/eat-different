@@ -1,6 +1,7 @@
 // SOP: architecture/square-webhook.md → recordPayment. Idempotent.
-import { db, UNIQUE_VIOLATION } from "../lib/clients";
+import { db, square, UNIQUE_VIOLATION } from "../lib/clients";
 import { OrderRowSchema, type LedgerRow, type OrderRow, type PaymentFacts, type Settings } from "../schemas";
+import { recipientEmail } from "./paymentFacts";
 
 export type PaymentPlan = {
   orderUpdate: Partial<OrderRow> | null;
@@ -24,7 +25,9 @@ export function planPaymentRecord(
           buyer_email: payment.buyerEmail,
           paid_at: nowIso,
         }
-      : null;
+      : order.status === "PAID" && !order.buyer_email && payment.buyerEmail
+        ? { buyer_email: payment.buyerEmail } // repair rows recorded before the email fallback
+        : null;
   if (order.status === "REFUNDED") return { orderUpdate: null, ledger: null };
   const ledger: LedgerRow =
     order.kind === "FOOD"
@@ -55,13 +58,18 @@ export async function recordPayment(
   const order = payment.orderId ? await loadOrder(payment.orderId) : null;
   if (!order) return { result: "ignored", firstTime: false, order: null }; // not a website order (D15)
 
+  if (!payment.buyerEmail && order.kind === "FOOD") {
+    const { order: sq } = await square().orders.get({ orderId: order.square_order_id });
+    payment = { ...payment, buyerEmail: recipientEmail(sq) };
+  }
+
   const plan = planPaymentRecord(order, payment, settings, new Date().toISOString());
   if (plan.orderUpdate) {
     const { error } = await db()
       .from("orders")
       .update(plan.orderUpdate)
       .eq("square_order_id", order.square_order_id)
-      .eq("status", "PENDING");
+      .eq("status", order.status); // only if nobody changed it meanwhile
     if (error) throw new Error(`orders update: ${error.message}`);
   }
   const firstTime = plan.ledger ? await insertLedger(plan.ledger) : false;

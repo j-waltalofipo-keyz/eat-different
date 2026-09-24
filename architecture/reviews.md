@@ -6,6 +6,9 @@ Real customers leave honest reviews; nobody else can; bad ratings are never hidd
 ## Input — `ReviewSubmit`
 `{ receiptNumber, email, rating 1–5 int, displayName 1–40, body 10–1000 }` (trimmed).
 
+The email checked is the one the buyer typed on Square's checkout page — stored as
+`orders.buyer_email` from the pickup recipient (see `square-webhook.md` → recordPayment).
+
 ## Flow — `POST /api/reviews`
 1. zod-validate → 400.
 2. Load every `orders` row with that exact `receipt_number` (trimmed; Square receipt numbers are

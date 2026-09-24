@@ -22,9 +22,15 @@ Subscribed events: `payment.updated`, `refund.updated` (+ `refund.created`).
 
 ## Tool — `execution/orders/recordPayment.ts`
 1. Load the `orders` row for `payment.orderId`. **None → ignore** (in-person/POS sale, D15).
+   **Buyer email:** `payment.buyer_email_address` if present, else the Square order's PICKUP
+   fulfillment `recipient.emailAddress` (food only). ⚠️ Verified 2026-09-23 in sandbox: hosted
+   checkout leaves `buyer_email_address` **empty** and stores email + phone on the pickup
+   recipient. Donations carry no email anywhere (not needed — donations can't be reviewed).
 2. Pure `planPaymentRecord(order, payment, settings)`:
    - order `PENDING` → update to `PAID` with `square_payment_id`, `receipt_number`,
      `buyer_email` (lower-cased), `paid_at`.
+   - order already `PAID` but `buyer_email` empty and the payment now has one → fill in just
+     `buyer_email` (repairs rows recorded before the fallback existed).
    - ledger: `FOOD` → `ORDER`, `+fund_per_order_cents`; `DONATION` → `DONATION`,
      `+payment.amountMoney` (tip excluded).
    - order already `REFUNDED` → no ledger row.

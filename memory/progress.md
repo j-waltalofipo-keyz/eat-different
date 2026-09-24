@@ -89,3 +89,21 @@
   unset, `isAdmin()` returned before touching cookies, so a redirect got baked in.
   Analyze → Patch (read cookie first + `dynamic = "force-dynamic"`) → Test (`next build`: all
   admin/api routes ƒ) → Architecture (lesson added to admin.md).
+
+### Phase A — sandbox payment test (2026-09-23)
+- Owner paid both sandbox links (hosted checkout, test card entered by owner).
+- Ran the real completion path (`.tmp/confirm-payments.ts`): both payments COMPLETED; receipts
+  `nlTZ` (food $32.00) / `PPiZ` (donation $10.00). getOrderView(token) self-healed → food PAID,
+  pickup section returned; wrong token → null. completePayment(donation) → recorded. Replays →
+  `firstTime:false` (no double count, no duplicate alert). Ledger: ORDER +500, DONATION +1000.
+  Public fund: 0% ($15 / $42,000 = 0.036% → floors to 0.0).
+- **Error: `buyer_email` MISSING on both payments** → reviews impossible.
+  - Analyze (`.tmp/find-email.ts`): hosted checkout leaves `payment.buyer_email_address` empty;
+    email + phone live on the order's PICKUP `recipient`. Donations: no email anywhere.
+  - Architecture first: square-webhook.md + reviews.md updated.
+  - Patch: pure `recipientEmail(order)`; recordPayment falls back to it for FOOD; plan repairs a
+    PAID row missing its email. Test: 56/56 ✅ (+3), tsc ✅.
+  - Live (`.tmp/verify-reviews.ts`): replay repaired `buyer_email` with no new alert; reviews:
+    wrong email NOT_FOUND, donation receipt NOT_FOUND, real buyer ✅ (+ Google link),
+    second → ALREADY_REVIEWED; public list exposes only displayName/rating/body/createdAt.
+- Test data now in Supabase: 2 PAID orders, 2 ledger rows, 1 review → wipe in Phase T.

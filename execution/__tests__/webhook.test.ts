@@ -1,5 +1,6 @@
 import { createHmac } from "node:crypto";
 import { describe, expect, it } from "vitest";
+import { recipientEmail } from "../orders/paymentFacts";
 import { parseSquareEvent } from "../square/squareEvent";
 import { verifyWebhook } from "../square/verifyWebhook";
 
@@ -72,5 +73,20 @@ describe("parseSquareEvent", () => {
     );
     expect(refund).toMatchObject({ kind: "refund", refund: { status: "COMPLETED", paymentId: "PAY", orderId: "ORD" } });
     expect(parseSquareEvent(JSON.stringify({ event_id: "E4", type: "order.created", data: {} })).kind).toBe("other");
+  });
+});
+
+describe("recipientEmail (hosted checkout stores the buyer email on the pickup recipient)", () => {
+  it("reads and lower-cases the PICKUP recipient email", () => {
+    expect(
+      recipientEmail({
+        locationId: "L",
+        fulfillments: [{ type: "PICKUP", pickupDetails: { recipient: { emailAddress: " Tay@Example.com " } } }],
+      }),
+    ).toBe("tay@example.com");
+  });
+  it("returns null when there is no pickup recipient email (e.g. donations)", () => {
+    expect(recipientEmail({ locationId: "L", fulfillments: [{ type: "SHIPMENT" }] })).toBeNull();
+    expect(recipientEmail(undefined)).toBeNull();
   });
 });

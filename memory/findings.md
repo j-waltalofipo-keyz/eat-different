@@ -22,8 +22,9 @@
   Square's default confirmation.
 
 ### Open questions (carried into Phase A)
-- [ ] Does a **hosted-checkout** payment carry `buyer_email_address` and `receipt_number`?
-      (reviews depend on it) — needs one sandbox payment through the hosted page.
+- [x] Hosted-checkout payment: `receipt_number` ✅ present; `buyer_email_address` ❌ **empty**.
+      The email (and phone) the buyer types is stored on the order's PICKUP
+      `fulfillment.pickupDetails.recipient`. Donations carry no email. Fallback implemented (2026-09-23).
 - [x] Sold-out status: `itemVariationData.locationOverrides[].soldOut` (SDK types, 2026-09-23).
 - [x] `order.metadata.kind` survives on the Square order (RetrieveOrder, 2026-09-23). Routing
       doesn't depend on it anyway — the webhook looks the order up in our own `orders` table.
@@ -81,3 +82,7 @@
 - Review gating (only sending happy customers to Google / hiding low ratings) is prohibited by
   the FTC consumer-reviews rule and Google policy → Invariant 7.
 - Donations to a for-profit business are not tax-deductible → must be stated in copy (Invariant 6).
+
+### UX flag for Phase S
+- Public fund shows one decimal: $15 raised = 0.036% → displays **0%**. It first shows 0.1% at
+  $4,200. Decide in Phase S how to make early progress visible without exposing dollars.

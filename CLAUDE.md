@@ -12,7 +12,7 @@ Built under the **B.L.A.S.T.** protocol (Blueprint → Link → Architect → St
 | Protocol 0 — Init | ✅ Done 2026-09-22 |
 | B — Blueprint | ✅ Approved 2026-09-22 |
 | L — Link | ✅ All 4 links green 2026-09-23 (`npm run probe:all`) |
-| A — Architect | 🔨 Nearly done — 53 tests ✅, build ✅; needs 1 sandbox payment test + admin login test |
+| A — Architect | 🔨 Nearly done — 56 tests ✅, build ✅, sandbox payment + reviews verified; admin login test pending |
 | S — Stylize | 🔒 |
 | T — Trigger | 🔒 |
 

@@ -52,13 +52,20 @@ describe("planPaymentRecord", () => {
 
   it("replay on an already-PAID order: no status change; same ledger row (DB unique makes it a no-op)", () => {
     const first = planPaymentRecord(order(), payment(), settings, NOW);
-    const replay = planPaymentRecord(order({ status: "PAID" }), payment(), settings, NOW);
+    const replay = planPaymentRecord(order({ status: "PAID", buyer_email: "tay@example.com" }), payment(), settings, NOW);
     expect(replay.orderUpdate).toBeNull();
     expect(replay.ledger).toEqual(first.ledger);
   });
 
   it("uses fund_per_order_cents at payment time", () => {
     expect(planPaymentRecord(order(), payment(), { fund_per_order_cents: 700 }, NOW).ledger?.amount_cents).toBe(700);
+  });
+
+  it("repairs a PAID order missing its buyer email (and only the email)", () => {
+    const plan = planPaymentRecord(order({ status: "PAID", buyer_email: null }), payment(), settings, NOW);
+    expect(plan.orderUpdate).toEqual({ buyer_email: "tay@example.com" });
+    expect(planPaymentRecord(order({ status: "PAID", buyer_email: "x@y.com" }), payment(), settings, NOW).orderUpdate).toBeNull();
+    expect(planPaymentRecord(order({ status: "PAID" }), payment({ buyerEmail: null }), settings, NOW).orderUpdate).toBeNull();
   });
 
   it("does nothing for non-completed payments or refunded orders", () => {

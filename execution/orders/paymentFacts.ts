@@ -33,6 +33,12 @@ export function factsFromWebhook(payment: unknown): PaymentFacts {
   };
 }
 
+/** Pure. Hosted checkout stores the buyer's email on the PICKUP recipient, not the payment. */
+export function recipientEmail(order: Square.Order | undefined): string | null {
+  const pickup = order?.fulfillments?.find((f) => f.type === "PICKUP");
+  return pickup?.pickupDetails?.recipient?.emailAddress?.trim().toLowerCase() || null;
+}
+
 export function factsFromSdk(p: Square.Payment): PaymentFacts {
   return {
     id: p.id ?? "",
