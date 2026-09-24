@@ -11,8 +11,8 @@ Built under the **B.L.A.S.T.** protocol (Blueprint → Link → Architect → St
 |---|---|
 | Protocol 0 — Init | ✅ Done 2026-09-22 |
 | B — Blueprint | ✅ Approved 2026-09-22 |
-| L — Link | ⏳ Waiting on API keys (see `memory/task_plan.md`) |
-| A — Architect | 🔒 Blocked until every link is green |
+| L — Link | ✅ All 4 links green 2026-09-23 (`npm run probe:all`) |
+| A — Architect | 🔓 Next |
 | S — Stylize | 🔒 |
 | T — Trigger | 🔒 |
 

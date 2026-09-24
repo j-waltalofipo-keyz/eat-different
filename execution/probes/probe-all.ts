@@ -1,14 +1,16 @@
-// Phase L runner. Usage: tsx execution/probes/probe-all.ts [square|supabase|resend ...] [--send]
+// Phase L runner. Usage: tsx execution/probes/probe-all.ts [square|supabase|resend|vercel ...] [--send]
 // Prints ✅/❌ per service, saves .tmp/probe-results.json, exits 1 if any link is broken.
 import { print, run, saveResults } from "./lib";
 import { probeResend } from "./probe-resend";
 import { probeSquare } from "./probe-square";
 import { probeSupabase } from "./probe-supabase";
+import { probeVercel } from "./probe-vercel";
 
 const probes = {
   square: () => probeSquare(),
   supabase: () => probeSupabase(),
   resend: () => probeResend(process.argv.includes("--send")),
+  vercel: () => probeVercel(),
 };
 type Name = keyof typeof probes;
 

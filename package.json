@@ -8,6 +8,7 @@
     "probe:supabase": "tsx execution/probes/probe-all.ts supabase",
     "probe:resend": "tsx execution/probes/probe-all.ts resend",
     "probe:resend:send": "tsx execution/probes/probe-all.ts resend --send",
+    "probe:vercel": "tsx execution/probes/probe-all.ts vercel",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {

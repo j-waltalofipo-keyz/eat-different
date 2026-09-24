@@ -15,6 +15,7 @@ runs. Broken link = halt.
 | `npm run probe:supabase` | API URL shape, service key reads `settings` row 1, anon key is blocked by RLS | none |
 | `npm run probe:resend` | key accepted (`domains.list`; sending-only key also counts as valid) | none |
 | `npm run probe:resend:send` | delivers ONE email to `OWNER_EMAIL` | **sends email — ask the owner first** |
+| `npm run probe:vercel` | `SITE_URL` returns 200 without redirects | none |
 
 Exit code 0 = all green, 1 = at least one ❌.
 
@@ -26,5 +27,10 @@ Exit code 0 = all green, 1 = at least one ❌.
 - **Windows exit crash:** calling `process.exit()` while fetch sockets are closing triggers a
   libuv assertion (`src\win\async.c`, exit code -1073740791) even when every probe passed. Set
   `process.exitCode` and let Node exit naturally. (2026-09-23)
+- **Vercel Deployment Protection:** only the production project domain
+  (`https://eat-different.vercel.app`) is public. Team (`…-jaredkey87-5672.vercel.app`) and
+  per-deployment URLs return 302 to `vercel.com/sso-api`. Always probe/link `SITE_URL`. (2026-09-23)
+- **Resend OWNER_EMAIL:** 403 `validation_error` if it isn't the Resend account's own address
+  while no domain is verified. (2026-09-23)
 - **Resend test sender** (`onboarding@resend.dev`) only delivers to the Resend account owner's
   address until a domain is verified → `OWNER_EMAIL` must be that address.

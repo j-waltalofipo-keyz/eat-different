@@ -23,7 +23,7 @@ the truck-fund tracker ($5/order, 100% of donations, $42,000 goal, public % only
 - [ ] Owner saves `reference/menu.jpg` (for photo crops — needed by Phase S, not blocking L)
 - [ ] Owner shares website inspiration → `reference/` (needed by Phase S, not blocking L)
 
-## Phase L — Link ⏳
+## Phase L — Link ✅ (completed 2026-09-23)
 - [ ] Owner creates keys and pastes into `.env`:
   - [x] Square Sandbox: `SQUARE_ACCESS_TOKEN`, `SQUARE_APPLICATION_ID`, `SQUARE_LOCATION_ID`
   - [x] Supabase: `SUPABASE_URL`, `SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`
@@ -34,12 +34,14 @@ the truck-fund tracker ($5/order, 100% of donations, $42,000 goal, public % only
 - [x] Supabase schema migration applied, `npm run probe:supabase` ✅ (2026-09-23)
 - [x] `npm run probe:resend` ✅ + `probe:resend:send` ✅ sent + arrival confirmed (2026-09-23)
 - [ ] **Phase T blocker:** pick permanent alert inbox (verified domain vs owner's Resend account) — D14
-- [ ] Vercel hello-world preview returns 200 ✅
-- [ ] Verify open questions from findings.md (buyer email + receipt_number on payment.updated,
-      sold_out location, metadata survives, Square ToS on support payments)
-- [ ] All results logged in progress.md → then unlock Phase A
+- [x] Vercel: `https://eat-different.vercel.app` returns 200 → `npm run probe:vercel` ✅
+- [x] All results logged in progress.md → Phase A unlocked
 
-## Phase A — Architect 🔒
+## Phase A — Architect 🔓 (next)
+- [ ] Verify open Square questions from findings.md during the first Sandbox checkout — they
+      need a real payment event, so they couldn't be checked in Phase L: buyer email +
+      receipt_number on payment.updated, sold_out location, metadata survives, Square ToS on
+      support payments. Update SOPs before dependent code.
 - [ ] SOPs (write BEFORE each tool): menu-sync, checkout, donations, square-webhook, truck-fund,
       reviews, kitchen-toggle, notify-list, owner-alert-email, crop-menu
 - [ ] Next.js scaffold + Tailwind + Vitest + zod

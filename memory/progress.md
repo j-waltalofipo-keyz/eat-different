@@ -45,3 +45,13 @@
     Set `OWNER_EMAIL` line only → `probe:resend:send` ✅ sent, id
     01a0d0de-61d9-7339-93c0-b16e4fd5883e, exit 0.
 - **Phase L — Resend ✅** owner confirmed the test email arrived in the inbox.
+- **Phase L — Vercel ✅** (owner approved a public placeholder)
+  - Connector `create_deployment` (inline `index.html` from `execution/probes/vercel-hello/`,
+    target production) → project `eat-different` (prj_HiF5uwrB1hFWbwXwxCvPxvd8ZWDV),
+    deployment dpl_H8eSwmxYqiusqBEtQQXnnJNYhmmT, READY, region iad1.
+  - `https://eat-different.vercel.app` → 200, title "Eat. Different. — Coming soon";
+    screenshot in browser pane renders black/gold/cream placeholder correctly.
+  - Team + per-deployment URLs → 302 to vercel.com/sso-api (Deployment Protection, expected).
+  - Added `probe-vercel.ts` + `SITE_URL` (in .env.example and appended to .env).
+- **PHASE L COMPLETE ✅** `npm run probe:all` → square ✅ supabase ✅ resend ✅ vercel ✅, exit 0.
+  Phase A unlocked.

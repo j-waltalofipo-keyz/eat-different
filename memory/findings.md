@@ -44,9 +44,10 @@
   `jaredkey87-5672` (id team_orNp7TYLWYzgwTgW8GPAgthX). No projects yet (2026-09-23).
 - No local Vercel CLI login needed for the probe: the connector's `create_deployment` accepts
   inline files. Git-based deploys (Phase T) will need a GitHub remote.
-- Expected (verify with the probe): default Deployment Protection guards *preview* and
-  per-deployment URLs (401 without Vercel login), while the production `<project>.vercel.app`
-  domain is public → probe with `target: production` and curl the project domain.
+- **Verified 2026-09-23:** Deployment Protection is on by default. The production project
+  domain `https://eat-different.vercel.app` → 200 (public). Team alias and per-deployment URLs
+  → 302 to `vercel.com/sso-api`. Project id prj_HiF5uwrB1hFWbwXwxCvPxvd8ZWDV, region iad1.
+- Inline-file `create_deployment` with `framework: null` serves a static `index.html` fine.
 
 ## Resend
 - Free tier ~3,000 emails/month.
