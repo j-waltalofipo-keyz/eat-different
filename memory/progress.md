@@ -43,4 +43,5 @@
     account holder need a verified domain → decision pending with owner.
   - Decision: test with jared.key87@gmail.com now; permanent alert inbox decided in Phase T.
     Set `OWNER_EMAIL` line only → `probe:resend:send` ✅ sent, id
-    01a0d0de-61d9-7339-93c0-b16e4fd5883e, exit 0. Awaiting inbox confirmation.
+    01a0d0de-61d9-7339-93c0-b16e4fd5883e, exit 0.
+- **Phase L — Resend ✅** owner confirmed the test email arrived in the inbox.

@@ -32,7 +32,7 @@ the truck-fund tracker ($5/order, 100% of donations, $42,000 goal, public % only
   - [ ] (later, once a webhook URL exists) `SQUARE_WEBHOOK_SIGNATURE_KEY`
 - [x] `npm run probe:square` ✅ (2026-09-23)
 - [x] Supabase schema migration applied, `npm run probe:supabase` ✅ (2026-09-23)
-- [x] `npm run probe:resend` ✅ + `probe:resend:send` ✅ sent (2026-09-23) — confirm it arrived
+- [x] `npm run probe:resend` ✅ + `probe:resend:send` ✅ sent + arrival confirmed (2026-09-23)
 - [ ] **Phase T blocker:** pick permanent alert inbox (verified domain vs owner's Resend account) — D14
 - [ ] Vercel hello-world preview returns 200 ✅
 - [ ] Verify open questions from findings.md (buyer email + receipt_number on payment.updated,

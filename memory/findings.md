@@ -39,6 +39,15 @@
   (`eyJ…`). supabase-js 2.117 accepts either. Owner is using legacy keys.
 - Advisor lint `0008_rls_enabled_no_policy` (INFO) is expected with our deny-all RLS design.
 
+## Vercel
+- Connector is authenticated as jared.key87@gmail.com, **Hobby** plan, team
+  `jaredkey87-5672` (id team_orNp7TYLWYzgwTgW8GPAgthX). No projects yet (2026-09-23).
+- No local Vercel CLI login needed for the probe: the connector's `create_deployment` accepts
+  inline files. Git-based deploys (Phase T) will need a GitHub remote.
+- Expected (verify with the probe): default Deployment Protection guards *preview* and
+  per-deployment URLs (401 without Vercel login), while the production `<project>.vercel.app`
+  domain is public → probe with `target: production` and curl the project domain.
+
 ## Resend
 - Free tier ~3,000 emails/month.
 - **Confirmed 2026-09-23:** without a verified domain, Resend returns 403 `validation_error` for
