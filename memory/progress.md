@@ -274,3 +274,14 @@
 - Typecheck ✅, tests 67/67 ✅, no horizontal scroll at 1280 or 375.
 - Noticed, not changed: on phones at 0% the Truck is clipped at the left edge (the 12% clamp is
   narrower than half the truck's width). This predates today's work.
+
+### Fix — Road to the Truck clipped on phones (2026-09-24)
+- Analyze: the truck center was clamped at max(12%, …). On a 343 px track, 12% is 41 px, less than
+  half of the 144 px truck, so about 31 px hung off the left edge.
+- Patch: the left is now `clamp(max(12%, var(--truck-half)), p%, 66%)`, with --truck-half set to
+  4.5rem, or 5.5rem at sm. Chip-in coins now land on the truck's real offsetLeft (they used a copy
+  of the old % clamp). The attribute was renamed `data-road-truck` so it doesn't read as the
+  story's `data-truck`.
+- Test at 375: 0% gives left 16 / right 160, 40% gives center 137, 100% gives right 314 (track
+  343). At 1280 the center is still 12% (unchanged). Typecheck ✅, tests 67/67 ✅.
+- SOP: site-pages.md §6 records the rule.

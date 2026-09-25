@@ -78,7 +78,7 @@ export function TruckRoad({ percent, donations, showChipIn = true }: { percent: 
       gsap.fromTo(
         coin,
         { left: "50%", top: -10, xPercent: -50, rotate: -20, autoAlpha: 1 },
-        { left: `${Math.max(12, Math.min(p, 66))}%`, top: 140, rotate: 360, autoAlpha: 0, duration: 0.7, ease: "power2.in", onComplete: () => (coin.remove(), done()) },
+        { left: root.current?.querySelector<HTMLElement>("[data-road-truck]")?.offsetLeft ?? "50%", top: 140, rotate: 360, autoAlpha: 0, duration: 0.7, ease: "power2.in", onComplete: () => (coin.remove(), done()) },
       ),
     );
   });
@@ -132,7 +132,12 @@ export function TruckRoad({ percent, donations, showChipIn = true }: { percent: 
         <div className="absolute bottom-10 right-0 w-48 sm:w-[24rem]">
           <Skyline />
         </div>
-        <div className="absolute bottom-10 h-24 w-36 -translate-x-1/2 transition-[left] duration-700 ease-out sm:h-28 sm:w-44" style={{ left: `${Math.max(12, Math.min(p, 66))}%` }}>
+        {/* Center clamped to max(12%, half the truck) so it never hangs off the road on phones (site-pages §6). */}
+        <div
+          data-road-truck
+          className="absolute bottom-10 h-24 w-36 -translate-x-1/2 transition-[left] duration-700 ease-out [--truck-half:4.5rem] sm:h-28 sm:w-44 sm:[--truck-half:5.5rem]"
+          style={{ left: `clamp(max(12%, var(--truck-half)), ${p}%, 66%)` }}
+        >
           <Truck reached={reached} />
         </div>
       </div>
