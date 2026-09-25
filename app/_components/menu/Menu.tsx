@@ -65,10 +65,23 @@ export function Menu({ items, kitchenOpen }: { items: MenuItem[] | null; kitchen
                   item.soldOut ? "border-cream/20 opacity-60" : "border-gold/80 hover:-translate-y-2 motion-safe:hover:rotate-[-1deg]"
                 }`}
               >
-                <div className="relative h-52 bg-[repeating-linear-gradient(135deg,#1c1c1c_0_12px,#161616_12px_24px)]">
+                <div
+                  className={`relative h-60 overflow-hidden ${
+                    item.imageUrl
+                      ? "bg-[radial-gradient(ellipse_at_50%_60%,rgba(245,178,26,0.16),transparent_62%),#0b0b0b]"
+                      : "bg-[repeating-linear-gradient(135deg,#1c1c1c_0_12px,#161616_12px_24px)]"
+                  }`}
+                >
                   {!item.soldOut && <Steam />}
                   {item.imageUrl ? (
-                    <Image src={item.imageUrl} alt={item.name} fill sizes="(min-width:1024px) 33vw, (min-width:640px) 50vw, 100vw" className="object-cover" />
+                    // Photos fade to transparent at the edges (crop-menu.md), so they sit on the glow.
+                    <Image
+                      src={item.imageUrl}
+                      alt={item.name}
+                      fill
+                      sizes="(min-width:1024px) 30vw, (min-width:640px) 45vw, 90vw"
+                      className="object-contain p-1 transition-transform duration-500 motion-safe:group-hover:scale-105"
+                    />
                   ) : (
                     <span className="absolute inset-0 grid place-items-center font-display text-sm uppercase tracking-[0.3em] text-cream/35">Photo coming soon</span>
                   )}

@@ -2,6 +2,7 @@
 // design-direction.md §7 Hero (approved D26): logo reveal, pointer-tilt dish, rotating sticker, live kitchen pill.
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
+import Image from "next/image";
 import { useRef } from "react";
 import { Logo } from "./Logo";
 
@@ -20,21 +21,6 @@ function Sticker() {
       <text x="100" y="118" textAnchor="middle" fill="#f3ead8" fontSize="46" fontFamily="var(--font-knewave)">
         E.D.
       </text>
-    </svg>
-  );
-}
-
-/** Illustrated stand-in until the dish photos are cropped from the menu. */
-function Waffle() {
-  const cells = [];
-  for (let r = 0; r < 5; r++) for (let c = 0; c < 5; c++) cells.push(<rect key={`${r}${c}`} x={62 + c * 30} y={62 + r * 30} width="22" height="22" rx="4" fill="#b8741f" />);
-  return (
-    <svg viewBox="0 0 280 280" className="h-full w-full drop-shadow-[0_30px_40px_rgba(0,0,0,0.45)]" aria-hidden>
-      <circle cx="140" cy="140" r="118" fill="#e7a445" />
-      <circle cx="140" cy="140" r="118" fill="none" stroke="#c98a2e" strokeWidth="10" />
-      {cells}
-      <path d="M40 110 C90 90 120 170 170 130 S240 150 250 120" stroke="#f5b21a" strokeWidth="14" strokeLinecap="round" fill="none" opacity="0.95" />
-      <path d="M60 190 C110 170 150 220 210 185" stroke="#d7263d" strokeWidth="8" strokeLinecap="round" fill="none" opacity="0.9" />
     </svg>
   );
 }
@@ -100,8 +86,9 @@ export function Hero({ kitchenOpen }: { kitchenOpen: boolean }) {
         {/* The gold arch — the one bold color field — frames only the dish, never the text. */}
         <div className="relative mx-auto grid h-[25rem] w-[19rem] place-items-center rounded-t-full bg-gold sm:h-[32rem] sm:w-[25rem]">
           <div className="h-64 w-64 [perspective:900px] sm:h-80 sm:w-80">
-            <div ref={dish} className="h-full w-full [transform-style:preserve-3d]">
-              <Waffle />
+            {/* Porthole: the photo fades to transparent at its edges (crop-menu.md), so it melts into the ink plate. */}
+            <div ref={dish} className="relative h-full w-full overflow-hidden rounded-full bg-ink shadow-[0_30px_40px_rgba(0,0,0,0.45)] ring-[6px] ring-ink">
+              <Image src="/images/sweet-heat.webp" alt="The Sweet Heat: hot honey chicken on a waffle" fill sizes="(min-width:640px) 20rem, 16rem" loading="eager" fetchPriority="high" className="scale-110 object-cover" />
             </div>
           </div>
           <div className="absolute -bottom-8 -left-8 h-28 w-28 sm:h-36 sm:w-36">

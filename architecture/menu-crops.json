@@ -1,0 +1,52 @@
+{
+  "$comment": "Dish crops from the owner's menu graphic (SOP: architecture/crop-menu.md). rect = source px; cutouts = px relative to rect, covering menu lettering that touches the dish. Interim until Eddie's photos arrive (D31, D35).",
+  "source": "reference/menu.jpg",
+  "sourceWidth": 920,
+  "sourceHeight": 2000,
+  "scale": 2,
+  "crops": [
+    {
+      "key": "sweet-heat",
+      "file": "sweet-heat.webp",
+      "rect": { "left": 0, "top": 618, "width": 247, "height": 226 },
+      "cutouts": []
+    },
+    {
+      "key": "ed-burger",
+      "file": "ed-burger.webp",
+      "rect": { "left": 480, "top": 640, "width": 248, "height": 252 },
+      "cutouts": [
+        { "left": 199, "top": 0, "width": 49, "height": 52 },
+        { "left": 212, "top": 52, "width": 36, "height": 70 },
+        { "left": 240, "top": 180, "width": 8, "height": 72 }
+      ]
+    },
+    {
+      "key": "teriyaki-after-dark",
+      "file": "teriyaki-after-dark.webp",
+      "rect": { "left": 0, "top": 914, "width": 272, "height": 234 },
+      "cutouts": [
+        { "left": 241, "top": 16, "width": 31, "height": 40 },
+        { "left": 259, "top": 50, "width": 13, "height": 46 }
+      ]
+    },
+    {
+      "key": "hammered-corn",
+      "file": "hammered-corn.webp",
+      "rect": { "left": 487, "top": 920, "width": 217, "height": 240 },
+      "cutouts": []
+    },
+    {
+      "key": "dirty-ed-fries",
+      "file": "dirty-ed-fries.webp",
+      "rect": { "left": 0, "top": 1170, "width": 270, "height": 242 },
+      "cutouts": [{ "left": 234, "top": 26, "width": 36, "height": 46 }]
+    },
+    {
+      "key": "birthday-banger",
+      "file": "birthday-banger.webp",
+      "rect": { "left": 487, "top": 1180, "width": 243, "height": 225 },
+      "cutouts": [{ "left": 226, "top": 13, "width": 17, "height": 44 }]
+    }
+  ]
+}

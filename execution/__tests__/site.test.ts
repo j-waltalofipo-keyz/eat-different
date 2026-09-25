@@ -12,6 +12,7 @@ import {
   type CartLine,
 } from "../site/cart";
 import { truckProgress } from "../site/milestones";
+import { CropSpecSchema, loadCropSpec } from "../assets/cropMenu";
 import seedJson from "../../architecture/menu-seed.json";
 
 const burger = (over: Partial<Omit<CartLine, "key">> = {}): Omit<CartLine, "key"> => ({
@@ -88,5 +89,16 @@ describe("menu photos (D33)", () => {
     for (const item of seedJson.items) {
       if (item.image) expect(existsSync(`public/images/${item.image}`), item.image).toBe(true);
     }
+  });
+  it("menu crops fit the source graphic and match seed items (D35)", () => {
+    const spec = loadCropSpec(); // throws if a rect or cutout falls outside its bounds
+    const keys = seedJson.items.map((i) => i.key);
+    for (const c of spec.crops) expect(keys, c.key).toContain(c.key);
+    expect(new Set(spec.crops.map((c) => c.file)).size).toBe(spec.crops.length);
+  });
+  it("rejects a crop that spills past the source", () => {
+    const spec = loadCropSpec();
+    const bad = { ...spec, crops: [{ ...spec.crops[0]!, rect: { left: 900, top: 0, width: 40, height: 40 } }] };
+    expect(() => CropSpecSchema.parse(bad)).toThrow(/outside the source/);
   });
 });

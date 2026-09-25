@@ -76,6 +76,8 @@
 - The menu art itself writes "EAT DIFFERENT"; the owner's stated brand is **"Eat. Different."**
   → use the owner's form in all site copy.
 - Menu graphic dishes are small; v1 photos are crops from it (owner's choice), replace later.
+- `reference/menu.jpg` is really WebP (920×2000); dishes ≈ 220–270 px wide → crops are soft if
+  blown up. Menu lettering touches the burger, teriyaki, fries and banger → cutouts in menu-crops.json.
 
 ## Business-logic notes
 - $5/order toward $42,000 = 8,400 orders with no donations. Donations were added to speed this up.

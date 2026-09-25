@@ -52,4 +52,6 @@ chip-in shows up on the road within a minute") + back home.
 ## Accessibility & motion
 - Every control keyboard-reachable; sheet/drawer trap focus and close on Esc; visible focus.
 - `prefers-reduced-motion`: logo lands in final state, no pin, no marquee, no tilt.
-- Images: `next/image`; missing photo → brand placeholder (D33), never a broken image.
+- Images: `next/image`; missing photo → brand placeholder (D33), never a broken image. Dish photos
+  fade to transparent at the edges (`crop-menu.md`): cards show them `object-contain` on an ink +
+  gold-glow stage; the hero shows Sweet Heat in an ink porthole inside the gold arch.

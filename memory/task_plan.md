@@ -20,7 +20,7 @@ the truck-fund tracker ($5/order, 100% of donations, $42,000 goal, public % only
 - [x] Data schema defined in CLAUDE.md
 - [x] Menu transcribed → `architecture/menu-seed.json`
 - [x] Research logged → `memory/findings.md`
-- [ ] Owner saves `reference/menu.jpg` (for photo crops — needed by Phase S, not blocking L)
+- [x] Owner saves `reference/menu.jpg` (2026-09-24) (for photo crops — needed by Phase S, not blocking L)
 - [ ] Owner shares website inspiration → `reference/` (needed by Phase S, not blocking L)
 
 ## Phase L — Link ✅ (completed 2026-09-23)
@@ -73,7 +73,7 @@ the truck-fund tracker ($5/order, 100% of donations, $42,000 goal, public % only
 - [ ] Receive Eddie's photos: menu image, dish photos, photo of Eddie, E.D. logo file → `reference/`
 - [x] Pages built: / (menu, cart, tracker, story, reviews, notify), /order/[token] (no-referrer), /donate/thanks — functional checks ✅
 - [ ] Admin page styling pass
-- [ ] SOP + tool: crop-menu (needs `reference/menu.jpg`)
+- [x] SOP + tool: crop-menu → 6 interim dish photos wired into menu + hero (D35, 2026-09-24)
 - [x] Interactive: logo reveal, pointer-tilt dish, sizzle cards, dad-quote words, truck parts, coin drop, pinned 685→816
 - [ ] Branded owner-alert emails
 - [ ] Screenshots desktop + 375px mobile + reduced-motion → owner sign-off

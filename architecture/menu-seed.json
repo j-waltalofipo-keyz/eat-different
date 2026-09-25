@@ -1,5 +1,5 @@
 {
-  "$comment": "Eat. Different. menu — transcribed from the owner's menu image 2026-09-22 and confirmed via the approved Blueprint. Source for execution/square/seedCatalog.ts. Keys are stable slugs used for idempotent upserts; Square IDs are assigned at seed time. `image` stays null until the photo file exists in public/images/ (D33; guarded by a test).",
+  "$comment": "Eat. Different. menu — transcribed from the owner's menu image 2026-09-22 and confirmed via the approved Blueprint. Source for execution/square/seedCatalog.ts. Keys are stable slugs used for idempotent upserts; Square IDs are assigned at seed time. `image` must name a file that exists in public/images/ (D33; guarded by a test) — currently the menu-graphic crops (D35, architecture/crop-menu.md) until Eddie's photos arrive.",
   "currency": "USD",
   "categories": [
     {
@@ -111,7 +111,7 @@
         "combo",
         "addons"
       ],
-      "image": null
+      "image": "sweet-heat.webp"
     },
     {
       "key": "birthday-banger",
@@ -130,7 +130,7 @@
         "combo",
         "addons"
       ],
-      "image": null
+      "image": "birthday-banger.webp"
     },
     {
       "key": "ed-burger",
@@ -150,7 +150,7 @@
         "combo",
         "addons"
       ],
-      "image": null
+      "image": "ed-burger.webp"
     },
     {
       "key": "teriyaki-after-dark",
@@ -170,7 +170,7 @@
       "modifierLists": [
         "addons"
       ],
-      "image": null
+      "image": "teriyaki-after-dark.webp"
     },
     {
       "key": "hammered-corn",
@@ -189,7 +189,7 @@
       "modifierLists": [
         "addons"
       ],
-      "image": null
+      "image": "hammered-corn.webp"
     },
     {
       "key": "dirty-ed-fries",
@@ -208,7 +208,7 @@
       "modifierLists": [
         "addons"
       ],
-      "image": null
+      "image": "dirty-ed-fries.webp"
     }
   ],
   "brandLines": [

@@ -197,3 +197,26 @@
 - NOT yet verified visually: the browser pane was hidden/throttled (rAF paused), so screenshots
   stalled mid-animation. Pending: desktop + 375px + reduced-motion screenshots with the window in
   front; mobile pinned story single-slot check. Test data (1 review, test orders) still in Supabase.
+
+### Phase S — interim dish photos (2026-09-24)
+- Owner saved the menu graphic to `reference/menu.jpg`. It is WebP inside despite the name, 920×2000.
+- SOP `architecture/crop-menu.md` came first. The crop spec is `architecture/menu-crops.json`: a
+  rect plus lettering cutouts per dish.
+- `execution/assets/cropMenu.ts` (sharp, now a devDependency) does:
+  - refuses any source that isn't 920×2000
+  - upscales ×2 with lanczos3
+  - vignettes the edges to transparent
+  - feather-punches the cutouts
+  - writes WebP with alpha
+- The CLI is `npm run assets:menu-crops`.
+- All 6 seed `image` fields now point at the `.webp` crops. The tests now also check that crop
+  rects and cutouts stay in bounds and that every crop maps to a seed item. Tests 67/67 ✅, typecheck ✅.
+- Contact sheet check found no menu lettering in any crop.
+- UI:
+  - Menu cards now use a 240px stage with `object-contain` over an ink + gold glow, plus a slight
+    hover zoom (motion-safe). The striped placeholder stays for null images.
+  - Hero: the Waffle SVG is replaced by the Sweet Heat photo in an ink porthole
+    (`loading="eager"`, `fetchPriority="high"`; `priority` is deprecated in Next 16).
+- Browser checks: 1280px and 375px both render. All 6 card images and the hero image load, with
+  no horizontal scroll. Animations were throttled again (window unfocused, rAF ~3 fps), so the
+  final motion state was only seen after waiting.

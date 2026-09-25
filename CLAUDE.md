@@ -13,7 +13,7 @@ Built under the **B.L.A.S.T.** protocol (Blueprint → Link → Architect → St
 | B — Blueprint | ✅ Approved 2026-09-22 |
 | L — Link | ✅ All 4 links green 2026-09-23 (`npm run probe:all`) |
 | A — Architect | ✅ Complete 2026-09-23 — 56 tests, build, sandbox payment, reviews, admin verified |
-| S — Stylize | 🔨 Direction APPROVED by Eddie 2026-09-24 — next: build production pages; photos incoming |
+| S — Stylize | 🔨 Direction APPROVED by Eddie 2026-09-24 — production pages built; interim menu-crop photos in (D35); Eddie's photos incoming |
 | T — Trigger | 🔒 |
 
 **HALT RULE:** no business logic in `execution/` until every Phase L probe is ✅.
