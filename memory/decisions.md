@@ -27,3 +27,12 @@
 | D23 | 2026-09-23 | **`APP_SECRET`** (random 32 bytes, server-only) signs unsubscribe links | Prevents anyone unsubscribing someone else's email. |
 | D24 | 2026-09-23 | **Admin login = one password** (`ADMIN_PASSWORD`, owner-set) + signed httpOnly cookie, 30 days. Replaces the planned Supabase magic link. Cookie key = HMAC(`APP_SECRET`, password) so changing the password logs everyone out. | Owner's choice: simplest, no Supabase Auth config, no extra package, no email dependency. Trade-off: shared password. |
 | D25 | 2026-09-23 | **Spell "Samoa" / "Samoan" plainly — no macron or other marks** (owner) | Owner's instruction; applies to all copy, SVG labels, and docs. The spelling question was removed from Eddie's review. |
+| D26 | 2026-09-24 | **Design direction APPROVED by Eddie** — overall look "Love it"; logo "Nailed it" ("Clever with the wink") | Phase S sign-off gate passed; production pages may be built. |
+| D27 | 2026-09-24 | **Tracker = option A: truck parts only** (wheels 10%, grill 25%, awning 50%, crown 75%, keys 100%) + progress-to-next-part bar. **No public count** of plates/chip-ins. | Eddie's choice. |
+| D28 | 2026-09-24 | **All Samoa × KC elements kept:** "Talofa!", "Fa'afetai!", "Made with alofa in KC", siapo-inspired bands, Samoan-flag red + blue, "From 685 to 816" | Eddie approved each one individually. |
+| D29 | 2026-09-24 | **Name on the site: "Eddie."** Story copy comes from Eddie's own words (light typo fixes only, pending owner OK) | Eddie's answers. |
+| D30 | 2026-09-24 | **No socials, hours, or Google profile yet** → footer/social links and the "Review us on Google" button stay hidden until provided; live Open/Closed covers hours | Eddie skipped section 6. |
+| D31 | 2026-09-24 | **Real photos from Eddie replace menu crops** (dish photos, photo of Eddie, his E.D. logo file) — supersedes D13; menu crops only as fallback | Eddie is sending them. |
+| D32 | 2026-09-24 | **Dad's quote gets its own full-width band** between Menu and Road to the Truck: "There's only 2 things that speak to the soul. Food, or music." — Eddie's dad | Owner's choice. |
+| D33 | 2026-09-24 | **Build production pages now; photos drop in later** (image slots fall back to illustration/placeholder until files exist) | Owner's choice — no time lost waiting on photos. |
+| D34 | 2026-09-24 | **Removed `/concept`** once the production home page replaced it; shared pieces moved to `app/_components/` | One copy of each component; the approved prototype stays in git history (632745d). |

@@ -98,7 +98,8 @@ describe("mapCatalogToMenu", () => {
   ];
 
   it("maps price, category name, sold-out-at-location, and seed presentation fields", () => {
-    const [burger, ...rest] = mapCatalogToMenu(catalog, seed, LOC);
+    const withPhoto = { ...seed, items: seed.items.map((i) => (i.name === "The E.D. Burger" ? { ...i, image: "ed-burger.jpg" } : i)) };
+    const [burger, ...rest] = mapCatalogToMenu(catalog, withPhoto, LOC);
     expect(rest).toHaveLength(0); // archived + other-location items skipped
     expect(burger).toMatchObject({
       variationId: "V_BURGER",

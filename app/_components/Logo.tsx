@@ -1,5 +1,5 @@
 "use client";
-// Concept — design-direction.md §3: "E.D." reveals itself as "Eat. Different."; hover → "It's Eddie."
+// design-direction.md §3 (approved D26): "E.D." reveals itself as "Eat. Different."; hover/tap → "It's Eddie."
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { useRef, useState } from "react";

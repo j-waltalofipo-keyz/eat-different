@@ -1,5 +1,5 @@
 "use client";
-// Concept — design-direction.md §7 Hero: logo reveal, pointer-tilt dish, rotating sticker, kitchen pill.
+// design-direction.md §7 Hero (approved D26): logo reveal, pointer-tilt dish, rotating sticker, live kitchen pill.
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { useRef } from "react";
@@ -39,7 +39,7 @@ function Waffle() {
   );
 }
 
-export function Hero() {
+export function Hero({ kitchenOpen }: { kitchenOpen: boolean }) {
   const root = useRef<HTMLElement>(null);
   const dish = useRef<HTMLDivElement>(null);
 
@@ -69,21 +69,8 @@ export function Hero() {
   );
 
   return (
-    <section ref={root} className="relative overflow-hidden bg-ink px-4 pb-20 pt-6 sm:px-8">
-      <nav className="relative z-10 flex items-center justify-between">
-        <span className="font-brush text-3xl text-gold">E.D.</span>
-        <div className="hidden gap-6 font-display text-sm uppercase tracking-widest sm:flex">
-          <a href="#menu">Menu</a>
-          <a href="#truck">The Truck</a>
-          <a href="#eddie">Eddie</a>
-          <a href="#reviews">Reviews</a>
-        </div>
-        <a href="#menu" className="rounded-full bg-gold px-5 py-2 font-display uppercase tracking-wider text-ink">
-          Order
-        </a>
-      </nav>
-
-      <div className="relative z-10 mt-20 grid items-center gap-14 sm:mt-28 lg:grid-cols-[1.2fr_1fr]">
+    <section ref={root} id="top" className="relative overflow-hidden bg-ink px-4 pb-20 pt-2 sm:px-8">
+      <div className="relative z-10 mt-10 grid items-center gap-14 sm:mt-16 lg:grid-cols-[1.2fr_1fr]">
         <div>
           <p data-hero-copy className="mb-6 font-display text-lg uppercase tracking-[0.3em] text-gold">Talofa, Kansas City 👋</p>
           <Logo />
@@ -99,9 +86,15 @@ export function Hero() {
               Chip in for the truck
             </a>
           </div>
-          <p data-hero-copy className="mt-6 inline-flex items-center gap-2 rounded-full bg-cream/10 px-4 py-2 text-sm">
-            <span className="h-2.5 w-2.5 rounded-full bg-ember" /> Kitchen closed right now — <u>get an email when it opens</u>
-          </p>
+          {kitchenOpen ? (
+            <p data-hero-copy className="mt-6 inline-flex items-center gap-2 rounded-full bg-gold/15 px-4 py-2 text-sm">
+              <span className="h-2.5 w-2.5 rounded-full bg-gold" /> Kitchen&rsquo;s open — <a href="#menu" className="underline">order for pickup</a>
+            </p>
+          ) : (
+            <p data-hero-copy className="mt-6 inline-flex items-center gap-2 rounded-full bg-cream/10 px-4 py-2 text-sm">
+              <span className="h-2.5 w-2.5 rounded-full bg-ember" /> Kitchen&rsquo;s closed — <a href="#notify" className="underline">get an email when it opens</a>
+            </p>
+          )}
         </div>
 
         {/* The gold arch — the one bold color field — frames only the dish, never the text. */}

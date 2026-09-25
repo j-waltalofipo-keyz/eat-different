@@ -158,3 +158,42 @@
   Published: https://claude.ai/artifact/BAFPKXgArVukrxKqC1D9GL (private until owner shares it).
 - Owner: spell "Samoa"/"Samoan" plainly, no macron (D25) → fixed in review page, /concept,
   design-direction.md; removed the spelling question.
+
+## 2026-09-24
+- Owner shared the review page with Eddie. Waiting on his copied answers + photos (Phase S sign-off gate).
+- **Eddie's answers received** (pasted by owner): Love it / Logo nailed it / Tracker A only / all 6
+  cultural elements Keep / name "Eddie" / story in his words / no business details yet / sending
+  menu image, dish photos, photo of Eddie, and an E.D. logo file. → D26–D30. **Phase S sign-off ✅.**
+- Owner decisions: story = Eddie's words + only 2 spelling fixes (D29 confirmed); dad's quote gets
+  its own band (D32); build production pages now, photos later (D33).
+- **Error (mine):** first pass of the site copy made extra edits to Eddie's words (merged sentences,
+  "MO"→"Missouri", added dashes/commas/caps). Owner approved only two fixes → restored Eddie's
+  exact wording + the two fixes in design-direction.md §10 and /concept.
+
+### Phase S — production pages (2026-09-24)
+- SOP first: `architecture/site-pages.md` (sections, data, states, cart, confirmation, a11y).
+- Pure helpers + tests: `execution/site/cart.ts` (merge/clamp/30-line cap/parse stored cart/
+  CheckoutRequest), `execution/site/milestones.ts` (D27 parts + progress to next part). Seed
+  `image` → null until the file exists, guarded by a test (D33). Tests 65/65 ✅.
+- Components in `app/_components/`: Logo, Bands, Hero (live kitchen pill), Nav (cart count),
+  Sheet (native <dialog>), Menu + PlateSheet (rules via the server's pure priceCart), CartProvider
+  + CartDrawer (checkout → /api/checkout → Square), DadQuote (D32), TruckRoad (live %, parts only,
+  chip-in → /api/donate), Story685 (Eddie's exact words, one beat at a time), Reviews (real only,
+  form, Google button only if set), Footer (notify form). Pages: `/`, `/order/[token]` (+poller,
+  clears cart when PAID), `/donate/thanks`. `next.config` headers: /order/* no-referrer + noindex.
+- Live checks (kitchen opened via SQL for the test, closed after):
+  - Home renders live data: kitchen pill flips open/closed; 4 tabs; fund 0% (correct); sections in order.
+  - Sweet Heat sheet: add blocked until waffle chosen; Classic + 1 bacon → "Add to order — $13.50";
+    cart drawer shows line + total, persisted to localStorage, nav "Your order · 1".
+  - Exact cart payload → POST /api/checkout → 200 sandbox link (form not submitted in-browser).
+  - /order/<bogus> → 404 with Referrer-Policy no-referrer + X-Robots-Tag noindex.
+  - /order/<paid token> → "Fa'afetai, Phase A Test!", receipt nlTZ, $32.00, "Eddie will share
+    pickup details" (no address set yet), review prompt. (First probe missed the greeting because
+    of React's <!-- --> text markers — probe issue, not a page bug.)
+- Fixed from the checks: card aria-label "Build your The Sweet Heat" → "Build The Sweet Heat";
+  required-choice button now says "Choose your waffle first"; chip-in error contrast (ember text on
+  cream 4.1:1) → ink text on ember tint; footer copy "One email…" → "We'll email you when…".
+- Removed /concept (D34). `next build` ✅, all app routes dynamic.
+- NOT yet verified visually: the browser pane was hidden/throttled (rAF paused), so screenshots
+  stalled mid-animation. Pending: desktop + 375px + reduced-motion screenshots with the window in
+  front; mobile pinned story single-slot check. Test data (1 review, test orders) still in Supabase.

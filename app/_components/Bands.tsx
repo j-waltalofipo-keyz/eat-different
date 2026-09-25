@@ -1,4 +1,4 @@
-// Concept — design-direction.md §6–7: siapo-inspired divider + ticker. Geometric, not tatau.
+// design-direction.md §6–7 (approved D28): siapo-inspired divider + ticker. Geometric, not tatau.
 
 export function SiapoBand({ id, className = "" }: { id: string; className?: string }) {
   return (

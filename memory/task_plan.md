@@ -66,13 +66,15 @@ the truck-fund tracker ($5/order, 100% of donations, $42,000 goal, public % only
 ## Phase S — Stylize 🔓 (next)
 - [x] `architecture/design-direction.md` DRAFT from menu art + 6 inspiration sites
 - [x] `/concept` live prototype of the direction (logo reveal, hero, menu, truck road, 685→816, reviews)
-- [ ] **Owner sign-off** on direction + tracker option (A / A+C) + every Samoan cultural element (Eddie approves)
-- [ ] Eddie's story in his own words (for 685 → 816)
-- [x] Review page for Eddie published: https://claude.ai/artifact/BAFPKXgArVukrxKqC1D9GL (owner must share it)
-- [ ] Receive Eddie's copied answers + photos → apply to design-direction.md, then build pages
-- [ ] Pages: /, /menu, /order/[token] (`Referrer-Policy: no-referrer`), /donate/thanks, /reviews, /admin
+- [x] **Sign-off ✅ 2026-09-24** — Eddie: look "Love it", logo "Nailed it", tracker A only, all 6 cultural elements kept (D26–D30)
+- [x] Eddie's story received → design-direction.md §10 (spelling fixes pending owner OK)
+- [x] Review page for Eddie published + shared with Eddie (2026-09-24): https://claude.ai/artifact/BAFPKXgArVukrxKqC1D9GL
+- [x] Eddie's answers applied to design-direction.md + /concept story cards
+- [ ] Receive Eddie's photos: menu image, dish photos, photo of Eddie, E.D. logo file → `reference/`
+- [x] Pages built: / (menu, cart, tracker, story, reviews, notify), /order/[token] (no-referrer), /donate/thanks — functional checks ✅
+- [ ] Admin page styling pass
 - [ ] SOP + tool: crop-menu (needs `reference/menu.jpg`)
-- [ ] Interactive: tracker (smoker gauge or rolling truck), sizzling menu cards, flame burst, smoke parallax
+- [x] Interactive: logo reveal, pointer-tilt dish, sizzle cards, dad-quote words, truck parts, coin drop, pinned 685→816
 - [ ] Branded owner-alert emails
 - [ ] Screenshots desktop + 375px mobile + reduced-motion → owner sign-off
 

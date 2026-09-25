@@ -33,7 +33,8 @@ it never stores its own prices.
     `required = minSelectedModifiers ≥ 1`; `maxQtyPerOption` from the seed list with the same
     name, else 1.
   - Presentation-only fields not representable in Square (`subtitle`, `image`) come from the seed
-    item with the same **name**; missing → `null`.
+    item with the same **name**; missing → `null`. A seed `image` stays `null` until its file
+    exists in `public/images/` (D33 — a test enforces it), so the site never shows a broken image.
   - Order: seed order first, then any other items alphabetically.
 - Cache: in-memory 60 s for display. **Checkout always calls with `{ fresh: true }`.**
 

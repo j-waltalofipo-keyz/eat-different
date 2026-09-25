@@ -1,11 +1,23 @@
 {
-  "$comment": "Eat. Different. menu — transcribed from the owner's menu image 2026-09-22 and confirmed via the approved Blueprint. Source for execution/square/seedCatalog.ts. Keys are stable slugs used for idempotent upserts; Square IDs are assigned at seed time.",
+  "$comment": "Eat. Different. menu — transcribed from the owner's menu image 2026-09-22 and confirmed via the approved Blueprint. Source for execution/square/seedCatalog.ts. Keys are stable slugs used for idempotent upserts; Square IDs are assigned at seed time. `image` stays null until the photo file exists in public/images/ (D33; guarded by a test).",
   "currency": "USD",
   "categories": [
-    { "key": "waffles", "name": "Waffles" },
-    { "key": "burgers", "name": "Burgers" },
-    { "key": "bowls", "name": "Bowls" },
-    { "key": "dirty-eats", "name": "Dirty Eats" }
+    {
+      "key": "waffles",
+      "name": "Waffles"
+    },
+    {
+      "key": "burgers",
+      "name": "Burgers"
+    },
+    {
+      "key": "bowls",
+      "name": "Bowls"
+    },
+    {
+      "key": "dirty-eats",
+      "name": "Dirty Eats"
+    }
   ],
   "modifierLists": [
     {
@@ -15,10 +27,26 @@
       "required": true,
       "maxQtyPerOption": 1,
       "options": [
-        { "key": "waffle-classic", "name": "Classic", "priceCents": 0 },
-        { "key": "waffle-chocolate-chip", "name": "Chocolate Chip", "priceCents": 0 },
-        { "key": "waffle-strawberry", "name": "Strawberry", "priceCents": 0 },
-        { "key": "waffle-birthday-cake", "name": "Birthday Cake", "priceCents": 0 }
+        {
+          "key": "waffle-classic",
+          "name": "Classic",
+          "priceCents": 0
+        },
+        {
+          "key": "waffle-chocolate-chip",
+          "name": "Chocolate Chip",
+          "priceCents": 0
+        },
+        {
+          "key": "waffle-strawberry",
+          "name": "Strawberry",
+          "priceCents": 0
+        },
+        {
+          "key": "waffle-birthday-cake",
+          "name": "Birthday Cake",
+          "priceCents": 0
+        }
       ]
     },
     {
@@ -28,7 +56,11 @@
       "required": false,
       "maxQtyPerOption": 1,
       "options": [
-        { "key": "combo-ed", "name": "The E.D. Combo (fries + drink of the day)", "priceCents": 500 }
+        {
+          "key": "combo-ed",
+          "name": "The E.D. Combo (fries + drink of the day)",
+          "priceCents": 500
+        }
       ]
     },
     {
@@ -38,10 +70,26 @@
       "required": false,
       "maxQtyPerOption": 3,
       "options": [
-        { "key": "addon-extra-sauce", "name": "Extra Sauce", "priceCents": 50 },
-        { "key": "addon-bacon", "name": "Bacon", "priceCents": 150 },
-        { "key": "addon-cheese", "name": "Cheese", "priceCents": 100 },
-        { "key": "addon-jalapenos", "name": "Jalapeños", "priceCents": 50 }
+        {
+          "key": "addon-extra-sauce",
+          "name": "Extra Sauce",
+          "priceCents": 50
+        },
+        {
+          "key": "addon-bacon",
+          "name": "Bacon",
+          "priceCents": 150
+        },
+        {
+          "key": "addon-cheese",
+          "name": "Cheese",
+          "priceCents": 100
+        },
+        {
+          "key": "addon-jalapenos",
+          "name": "Jalapeños",
+          "priceCents": 50
+        }
       ]
     }
   ],
@@ -52,9 +100,18 @@
       "subtitle": "Hot Honey Chicken + Waffle",
       "category": "waffles",
       "priceCents": 1200,
-      "ingredients": ["Crispy chicken", "Hot honey", "Pickles", "House sauce"],
-      "modifierLists": ["waffle", "combo", "addons"],
-      "image": "sweet-heat.jpg"
+      "ingredients": [
+        "Crispy chicken",
+        "Hot honey",
+        "Pickles",
+        "House sauce"
+      ],
+      "modifierLists": [
+        "waffle",
+        "combo",
+        "addons"
+      ],
+      "image": null
     },
     {
       "key": "birthday-banger",
@@ -62,9 +119,18 @@
       "subtitle": null,
       "category": "waffles",
       "priceCents": 1200,
-      "ingredients": ["Birthday-cake waffle", "Crispy chicken", "Hot honey", "Powdered sugar", "Vanilla drizzle"],
-      "modifierLists": ["combo", "addons"],
-      "image": "birthday-banger.jpg"
+      "ingredients": [
+        "Birthday-cake waffle",
+        "Crispy chicken",
+        "Hot honey",
+        "Powdered sugar",
+        "Vanilla drizzle"
+      ],
+      "modifierLists": [
+        "combo",
+        "addons"
+      ],
+      "image": null
     },
     {
       "key": "ed-burger",
@@ -72,9 +138,19 @@
       "subtitle": null,
       "category": "burgers",
       "priceCents": 1200,
-      "ingredients": ["2 smashed patties", "Am. cheese", "Caramelized onions", "Pickles", "E.D. sauce", "Toasted brioche bun"],
-      "modifierLists": ["combo", "addons"],
-      "image": "ed-burger.jpg"
+      "ingredients": [
+        "2 smashed patties",
+        "Am. cheese",
+        "Caramelized onions",
+        "Pickles",
+        "E.D. sauce",
+        "Toasted brioche bun"
+      ],
+      "modifierLists": [
+        "combo",
+        "addons"
+      ],
+      "image": null
     },
     {
       "key": "teriyaki-after-dark",
@@ -82,9 +158,19 @@
       "subtitle": null,
       "category": "bowls",
       "priceCents": 1300,
-      "ingredients": ["Crispy teriyaki chicken", "Seasoned fries", "Jasmine rice", "Grilled pineapple", "Scallions", "Sesame", "E.D. teriyaki glaze"],
-      "modifierLists": ["addons"],
-      "image": "teriyaki-after-dark.jpg"
+      "ingredients": [
+        "Crispy teriyaki chicken",
+        "Seasoned fries",
+        "Jasmine rice",
+        "Grilled pineapple",
+        "Scallions",
+        "Sesame",
+        "E.D. teriyaki glaze"
+      ],
+      "modifierLists": [
+        "addons"
+      ],
+      "image": null
     },
     {
       "key": "hammered-corn",
@@ -92,9 +178,18 @@
       "subtitle": null,
       "category": "dirty-eats",
       "priceCents": 700,
-      "ingredients": ["Creamy sweet corn", "Smoked ham", "Parmesan", "Black pepper", "Scallions", "Chili oil"],
-      "modifierLists": ["addons"],
-      "image": "hammered-corn.jpg"
+      "ingredients": [
+        "Creamy sweet corn",
+        "Smoked ham",
+        "Parmesan",
+        "Black pepper",
+        "Scallions",
+        "Chili oil"
+      ],
+      "modifierLists": [
+        "addons"
+      ],
+      "image": null
     },
     {
       "key": "dirty-ed-fries",
@@ -102,9 +197,18 @@
       "subtitle": null,
       "category": "dirty-eats",
       "priceCents": 800,
-      "ingredients": ["Crispy fries", "E.D. sauce", "Caramelized onions", "Cheese", "Crispy ham", "Scallions"],
-      "modifierLists": ["addons"],
-      "image": "dirty-ed-fries.jpg"
+      "ingredients": [
+        "Crispy fries",
+        "E.D. sauce",
+        "Caramelized onions",
+        "Cheese",
+        "Crispy ham",
+        "Scallions"
+      ],
+      "modifierLists": [
+        "addons"
+      ],
+      "image": null
     }
   ],
   "brandLines": [
