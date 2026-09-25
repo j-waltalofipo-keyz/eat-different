@@ -9,6 +9,9 @@
   --color-pacific: #1b3fa0;
 }
 
+/* Phones with little height (iPhone SE class). The pinned story must fit — site-pages.md §7. */
+@custom-variant short-phone (@media (max-width: 639px) and (max-height: 740px));
+
 @theme inline {
   --font-display: var(--font-anton), Impact, "Arial Narrow", sans-serif;
   --font-brush: var(--font-knewave), "Brush Script MT", cursive;

@@ -74,7 +74,7 @@ export function Story685() {
 
   return (
     <section ref={root} id="eddie" className="relative flex min-h-dvh scroll-mt-16 flex-col justify-center overflow-hidden bg-pacific px-4 pb-8 pt-[4.75rem] sm:px-8 sm:pb-12">
-      <h2 className="font-display text-5xl uppercase leading-none sm:text-8xl">
+      <h2 className="font-display text-5xl uppercase leading-none short-phone:text-[2.75rem] sm:text-8xl">
         From <span className="font-brush text-gold">685</span> to <span className="font-brush text-gold">816</span>
       </h2>
       <p className="mt-3 max-w-xl text-cream/80">
@@ -84,7 +84,7 @@ export function Story685() {
       <svg
         data-art
         viewBox={CAMERA.full}
-        className="mt-4 max-h-[36vh] w-full sm:mt-6 [&.camera]:-mx-4 [&.camera]:max-h-[27svh] [@media(max-height:740px)]:[&.camera]:max-h-[20svh] [&.camera]:w-[calc(100%+2rem)] [&.camera]:max-w-none"
+        className="mt-4 max-h-[36vh] w-full sm:mt-6 [&.camera]:-mx-4 [&.camera]:max-h-[27svh] short-phone:[&.camera]:max-h-[20svh] [&.camera]:w-[calc(100%+2rem)] [&.camera]:max-w-none"
         aria-hidden
       >
         {Array.from({ length: 60 }, (_, i) => (

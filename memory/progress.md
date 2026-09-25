@@ -285,3 +285,17 @@
 - Test at 375: 0% gives left 16 / right 160, 40% gives center 137, 100% gives right 314 (track
   343). At 1280 the center is still 12% (unchanged). Typecheck ✅, tests 67/67 ✅.
 - SOP: site-pages.md §6 records the rule.
+
+### Fix — story card overflowing short phones (2026-09-24)
+- Analyze: at 375×667 the pinned beats slot ended at 692, 25 px past the screen. The biggest item
+  in the stack was the heading, which wraps to 2 lines on phones (98 px): at 48 px it needs 345 px
+  and only 343 px is available.
+- Patch: a `short-phone` custom variant in globals.css (<640 px wide and ≤ 740 px tall). On those
+  screens the heading is 2.75rem, which fits one line (316 px), and the story art keeps its 20svh
+  cap (moved onto the same variant). Normal phones and desktop are unchanged.
+- Test (heading / art / slot bottom):
+  - 375×667: 46 / 133 / 640 ✓ (27 px to spare)
+  - 360×640: 46 / 128 / 634 ✓ (6 px)
+  - 375×812: 98 / 219 / 778 (unchanged)
+  - 1366×700: heading still 96 px
+- Typecheck ✅, tests 67/67 ✅. SOP: site-pages.md §7.
