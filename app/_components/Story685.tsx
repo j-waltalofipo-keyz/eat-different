@@ -1,16 +1,15 @@
 "use client";
 // SOP: architecture/site-pages.md §7 + design-direction.md §10. Eddie's exact words (D29).
-// Motion: pinned scroll draws Samoa → KC and shows ONE beat at a time in a shared slot (fits phones).
+// Art: StoryArt.tsx (D36). Motion: pinned scroll draws Samoa → KC and shows ONE beat at a time in a shared slot (fits phones).
 // No JS / reduced motion: route fully drawn, all beats stacked.
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { MotionPathPlugin } from "gsap/MotionPathPlugin";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useRef } from "react";
+import { KcArt, ROUTE, SamoaArt, ToonFilter } from "./StoryArt";
 
 gsap.registerPlugin(useGSAP, ScrollTrigger, MotionPathPlugin);
-
-const ROUTE = "M120 400 C 260 380, 330 250, 470 260 S 700 330, 760 220 S 850 120, 880 110";
 
 export const BEATS = [
   {
@@ -72,15 +71,15 @@ export function Story685() {
         {Array.from({ length: 60 }, (_, i) => (
           <circle key={i} cx={(i * 97) % 1000} cy={40 + ((i * 53) % 420)} r="1.6" fill="#f3ead8" opacity="0.18" />
         ))}
-        <ellipse cx="100" cy="408" rx="34" ry="11" fill="#f5b21a" />
-        <ellipse cx="160" cy="418" rx="20" ry="7" fill="#f5b21a" />
-        <text x="130" y="455" textAnchor="middle" fontFamily="var(--font-anton)" fontSize="20" fill="#f3ead8" letterSpacing="2">
+        <defs>
+          <ToonFilter />
+        </defs>
+        <SamoaArt />
+        <KcArt />
+        <text x="205" y="470" textAnchor="middle" fontFamily="var(--font-anton)" fontSize="20" fill="#f3ead8" letterSpacing="2">
           SAMOA · +685
         </text>
-        {[0, 14, 24, 36, 48].map((dx, i) => (
-          <rect key={dx} x={862 + dx} y={70 + (i % 2) * 14 - i * 3} width="10" height={40 - (i % 2) * 14 + i * 3} fill="#f5b21a" />
-        ))}
-        <text x="890" y="138" textAnchor="middle" fontFamily="var(--font-anton)" fontSize="20" fill="#f3ead8" letterSpacing="2">
+        <text x="800" y="206" textAnchor="middle" fontFamily="var(--font-anton)" fontSize="20" fill="#f3ead8" letterSpacing="2">
           KANSAS CITY · 816
         </text>
         <path d={ROUTE} fill="none" stroke="#f3ead8" strokeWidth="2" strokeDasharray="2 10" strokeLinecap="round" opacity="0.5" />

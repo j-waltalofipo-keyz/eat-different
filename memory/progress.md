@@ -220,3 +220,16 @@
 - Browser checks: 1280px and 375px both render. All 6 card images and the hero image load, with
   no horizontal scroll. Animations were throttled again (window unfocused, rAF ~3 fps), so the
   final motion state was only seen after waiting.
+
+### Phase S — story art + dad's name (2026-09-24)
+- SOP first: design-direction.md §6 describes the new route endpoints (D36); §7/§10 credit Karl David (D37).
+- `app/_components/StoryArt.tsx` (pure, no hooks): Catmull-Rom smoothed coastlines in map coords →
+  scene; `Palm` builds a segmented curved trunk, serrated fronds, and coconuts; KC skyline is a
+  point list (stacks, One KC Place stepped crown, Town Pavilion, slender tower, Power & Light
+  crown) plus lit windows; shared `#story-toon` offset-shadow filter; exports `ROUTE`, `APIA`, `KC_ROAD`.
+- Iterated with a sharp-rendered preview (.tmp/preview-story.tsx): translucent gold over pacific
+  read gray under the shadow → switched to flat fills; Upolu palm moved west, out of the route.
+- Story685 now renders the art; the truck drives Apia → KC road on scroll. Checked in the browser at
+  1280 and 375 px: renders, truck follows the new route, no horizontal scroll, no app console errors
+  (only dev HMR websocket noise). Art stays small on phones (SVG capped at 38vh; labels ~7 px).
+- DadQuote footer + aria-label → "Karl David, Eddie's dad".

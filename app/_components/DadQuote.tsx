@@ -38,7 +38,7 @@ export function DadQuote() {
     ));
 
   return (
-    <section ref={root} aria-label="A word from Eddie's dad" className="bg-ink px-4 py-24 text-center sm:px-8">
+    <section ref={root} aria-label="A word from Karl David, Eddie's dad" className="bg-ink px-4 py-24 text-center sm:px-8">
       <blockquote className="mx-auto max-w-5xl">
         <p className="font-display text-[clamp(2.2rem,7vw,5.5rem)] uppercase leading-[1.02]">
           <span className="text-gold">“</span>
@@ -48,7 +48,7 @@ export function DadQuote() {
           {words(PUNCH)}
           <span>”</span>
         </p>
-        <footer className="mt-6 font-display text-lg uppercase tracking-[0.3em] text-cream/70">— Eddie&rsquo;s dad</footer>
+        <footer className="mt-6 font-display text-lg uppercase tracking-[0.3em] text-cream/70">— Karl David, Eddie&rsquo;s dad</footer>
       </blockquote>
     </section>
   );

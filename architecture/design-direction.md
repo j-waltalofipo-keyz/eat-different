@@ -53,6 +53,15 @@ gold** → ember is for large text (≥ 24 px bold) and non-text accents only, n
 - **"From 685 to 816."** Samoa's country code is +685; Kansas City's area code is 816. Eddie's
   story section is a scroll-driven dotted route across the Pacific from Samoa to KC — the
   E.D. truck drives it as you scroll.
+  - **Endpoints are cartoony line art in one shared style** (owner request 2026-09-24, D36).
+    The style is a cream outline with round joins, a gold-tint fill, and a hard ink offset shadow.
+  - **Samoa** is the real Savai'i + Upolu coastlines, simplified from the official map, plus
+    the Manono/Apolima dots. It has twin leaning palms with coconuts on Savai'i and a single palm
+    on Upolu. The route leaves from Apia.
+  - **Kansas City** is a detailed skyline traced from the owner's reference. It runs left to
+    right: 4 smokestacks, low blocks, an antenna tower, stepped-crown One KC Place, Town
+    Pavilion, a slender tower, the Power & Light stepped crown, then the right-hand towers down
+    to the hill. The route ends on the road at its base.
 - **Siapo-inspired bands.** Geometric patterns inspired by *siapo* (Samoan bark-cloth art)
   as section dividers that draw themselves in. We deliberately avoid *tatau* (tattoo) motifs —
   they're personal and sacred — unless Eddie wants something specific.
@@ -68,7 +77,7 @@ gold** → ember is for large text (≥ 24 px bold) and non-text accents only, n
 | Hero | gold | E.D. → Eat. Different. reveal; floating dish tilts with the pointer; rotating "TALOFA • KANSAS CITY • EDDIE'S KITCHEN" sticker; live Kitchen Open/Closed pill |
 | Ticker | ink | "COMFORT FOOD. DIFFERENT RULES." marquee over a siapo band |
 | Menu | ink | Category tabs; big cut-out dish cards; tap → "build your plate" sheet (waffle, combo, add-ons with live price) |
-| Dad's quote | ink | One huge line, credited to Eddie's dad; words rise in as it scrolls into view |
+| Dad's quote | ink | One huge line, credited to Karl David, Eddie's dad (D37); words rise in as it scrolls into view |
 | Road to the Truck | cream | The truck assembles along a road to the KC skyline; "Chip in" coins drop into it |
 | 685 → 816 | pacific/ink | Scroll-driven route Samoa → KC with Eddie's story beats |
 | Reviews | gold | Polaroid cards with tape, slightly tilted; drag to shuffle |
@@ -103,7 +112,7 @@ Source: Eddie's review answers, 2026-09-24. Site copy is **exactly his words** e
 | 3 | Kansas City · 816 | Growing up my dad always said, “there’s only 2 things that speak to the soul. Food, Or Music”. I’m not no singer so here we are cooking! I’m excited to stage different flavors and show that you can always put your own twist on what you love! |
 
 **Pull quote — its own full-width band between Menu and the Road to the Truck (D32):**
-*“there’s only 2 things that speak to the soul. Food, Or Music”* — Eddie’s dad (Eddie’s exact words; the band sets it in caps).
+*“there’s only 2 things that speak to the soul. Food, Or Music”* — Karl David, Eddie’s dad (Eddie’s exact words; the band sets it in caps).
 
 ## 11. Business details (D30)
 Eddie skipped socials, hours, public area, and Google profile. Until he provides them:
