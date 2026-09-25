@@ -6,6 +6,9 @@ import { useRef, useState } from "react";
 
 gsap.registerPlugin(useGSAP);
 
+/** Seconds after load when "E.D." opens into "Eat. Different." Held ~1.2 s so E.D. = Eddie lands first (D40). */
+export const LOGO_REVEAL_AT = 2.95;
+
 export function Logo() {
   const root = useRef<HTMLDivElement>(null);
   const [wink, setWink] = useState(false);
@@ -21,7 +24,8 @@ export function Logo() {
           .from("[data-letter]", { scale: 0.2, rotate: -14, autoAlpha: 0, duration: 0.65, ease: "back.out(2.4)", stagger: 0.14 })
           .from("[data-dot]", { scale: 0, duration: 0.25, ease: "back.out(3)", stagger: 0.1 }, "-=0.25")
           .from("[data-crown]", { y: -60, rotate: -30, autoAlpha: 0, duration: 0.7, ease: "bounce.out" }, "-=0.1")
-          .to("[data-dot]", { width: 0, autoAlpha: 0, duration: 0.35, ease: "power2.in" }, "+=0.55")
+          .to("[data-letter], [data-dot]", { scale: 1.12, duration: 0.16, ease: "power2.out", yoyo: true, repeat: 1 }, "+=0.15")
+          .to("[data-dot]", { width: 0, autoAlpha: 0, duration: 0.35, ease: "power2.in" }, LOGO_REVEAL_AT - 0.25)
           .to("[data-rest]", { clipPath: "inset(0 0% 0 0)", duration: 0.8, ease: "power3.out", stagger: 0.12 }, "<0.1");
       });
     },

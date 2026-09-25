@@ -29,6 +29,9 @@ air, *one* signature interaction per section — never everything at once. That'
 - Reading down the left edge spells **E.D.**; the crown from the menu sits on the E.
 - **Intro animation:** only "E.D." shows, then the rest of each word slides out of its
   letter — *E.D. becomes Eat. Different.* Hover/tap the mark → a quick "It's Eddie." wink.
+- **E.D. holds the stage first** (owner, D40). After the crown lands, E.D. gives one quick pulse,
+  then sits alone for about 1.2 s before opening up. The rest of the hero copy waits for the
+  opening (`LOGO_REVEAL_AT`), so nothing competes with the E.D. = Eddie moment.
 - Works as a compact "E.D." monogram (favicon, stickers, nav).
 
 ## 4. Palette (from the menu art — tight on purpose)
@@ -59,16 +62,22 @@ gold** → ember is for large text (≥ 24 px bold) and non-text accents only, n
     the Manono/Apolima dots. It has twin leaning palms with coconuts on Savai'i and a single palm
     on Upolu. The route leaves from Apia.
   - **Kansas City** is a detailed skyline traced from the owner's reference. It runs left to
-    right: 4 smokestacks, low blocks, an antenna tower, stepped-crown One KC Place, Town
+    right: the **Sky Stations**, low blocks, an antenna tower, stepped-crown One KC Place, Town
     Pavilion, a slender tower, the Power & Light stepped crown, then the right-hand towers down
     to the hill. The route ends on the road at its base.
+  - **Sky Stations** (owner correction 2026-09-24: not smokestacks, D39) are KC's signature
+    landmark: four copper pylons on the Bartle Hall roof, with fanned cable stays and a
+    different lit sculpture on top of each. Left to right: crown cup, orb + spire, flared cup +
+    finial, antenna mast.
+  - The **same skyline** ends the Road to the Truck (`KcArt`, ink outline on cream, with a gold
+    "KANSAS CITY" sign across its base).
   - **Phones:** a camera pans from Samoa to KC with the truck (site-pages.md §7), so the art is about 2× bigger (owner request, D38).
 - **Siapo-inspired bands.** Geometric patterns inspired by *siapo* (Samoan bark-cloth art)
   as section dividers that draw themselves in. We deliberately avoid *tatau* (tattoo) motifs —
   they're personal and sacred — unless Eddie wants something specific.
 - **Samoan words, used warmly:** "Talofa!" as the greeting, "Fa'afetai!" on thank-you pages,
   "Made with alofa in KC" in the footer.
-- **KC touches:** a Kansas City skyline at the end of the truck-fund road; "816" sticker.
+- **KC touches:** the Sky Stations skyline at the end of the truck-fund road (D39); "816" sticker.
 - ✅ **Eddie approved all six elements** individually (2026-09-24, D28). Anything new that is
   cultural still goes to Eddie first — we don't guess here.
 

@@ -12,6 +12,7 @@ const SAND = "#f5b21a";
 const TRUNK = "#c8731c";
 const LEAF = "#8fb59a";
 const CITY = "#101c4a";
+const COPPER = "#c8641e";
 const f = (v: number) => Math.round(v * 10) / 10;
 
 /** Closed Catmull-Rom spline through the points → smooth cubic path (cartoony coastlines). */
@@ -192,16 +193,22 @@ export function SamoaArt() {
 // ── Kansas City ──────────────────────────────────────────────────────────────────────────────
 // Skyline traced from the owner's reference silhouette, left → right. Local units: x along the
 // ground, h = height above it; scaled into the scene below.
-const KC_X = 622;
+const KC_X = 637.8;
 const KC_GROUND = 178;
-const KC_SCALE = 0.95;
+const KC_SCALE = 0.92;
 const kc = ([x, h]: Pt): Pt => [KC_X + x * KC_SCALE, KC_GROUND - h * KC_SCALE];
+const at = (x: number, h: number) => kc([x, h]).map(f).join(" ");
 
 /** Where the route arrives: the road in front of the skyline. */
-export const KC_ROAD: Pt = [598, KC_GROUND];
+export const KC_ROAD: Pt = [550, KC_GROUND];
+
+/** The skyline alone, for pages that show just the city (Road to the Truck). */
+export const KC_FRAME = "576 40 424 140";
 
 const SKYLINE: Pt[] = [
-  [26, 0], [26, 15], [50, 15], [50, 35], [65, 35], [65, 46], [76, 46], [76, 38], [97, 38], [97, 57],
+  // Bartle Hall roof, under the Sky Stations
+  [-58, 0], [-58, 11], [-55, 13], [26, 13],
+  [26, 15], [50, 15], [50, 35], [65, 35], [65, 46], [76, 46], [76, 38], [97, 38], [97, 57],
   [112, 57], [112, 72], [117, 72], [117, 80], [123, 80], [123, 72], [128, 72], [128, 62], [136, 62],
   // One Kansas City Place — stepped crown
   [136, 100], [139, 100], [139, 106], [142, 106], [142, 112], [146, 112], [149, 121], [152, 112],
@@ -226,34 +233,90 @@ const WINDOWS: Pt[] = [
   [102, 44], [106, 32], [216, 58], [222, 46], [253, 38], [260, 28], [56, 24],
 ];
 
-export function KcArt() {
+// Sky Stations (R.M. Fischer, 1994) on the Bartle Hall pylons: each sculpture is different.
+const ROOF = 13;
+const PYLONS = [
+  { x: -44, top: 66, crown: "cup" },
+  { x: -27, top: 70, crown: "orb" },
+  { x: -10, top: 67, crown: "flare" },
+  { x: 7, top: 71, crown: "antenna" },
+] as const;
+
+function SkyStation({ x, top: t, crown, line }: { x: number; top: number; crown: (typeof PYLONS)[number]["crown"]; line: string }) {
+  const cables = [-13, -8, 8, 13].map((dx) => `M${at(x, t - 6)}L${at(x + dx, ROOF)}`).join("");
+  const column = `M${at(x - 3, ROOF)}L${at(x - 2.2, t)}L${at(x + 2.2, t)}L${at(x + 3, ROOF)}Z`;
+  const cap = `M${at(x - 4, t)}L${at(x - 4, t + 2.5)}L${at(x + 4, t + 2.5)}L${at(x + 4, t)}Z`;
+  const r = (h: number) => f(h * KC_SCALE);
+  return (
+    <g strokeWidth="1.8">
+      <path d={cables} fill="none" strokeWidth="1.1" opacity="0.7" />
+      <path d={column} fill={COPPER} />
+      <path d={cap} fill={GOLD} />
+      <g fill={GOLD}>
+        {crown === "cup" && (
+          <path d={`M${at(x - 3, t + 2.5)}L${at(x - 8.5, t + 11.5)}L${at(x - 6.5, t + 16.5)}L${at(x - 4.3, t + 11.5)}L${at(x, t + 18.5)}L${at(x + 4.3, t + 11.5)}L${at(x + 6.5, t + 16.5)}L${at(x + 8.5, t + 11.5)}L${at(x + 3, t + 2.5)}Z`} />
+        )}
+        {crown === "orb" && (
+          <>
+            <path d={`M${at(x, t + 2.5)}V${kc([x, t + 25])[1]}M${at(x - 4.5, t + 18)}H${kc([x + 4.5, 0])[0]}`} fill="none" stroke={line} />
+            <circle cx={kc([x, t + 9.5])[0]} cy={kc([x, t + 9.5])[1]} r={r(4.6)} />
+          </>
+        )}
+        {crown === "flare" && (
+          <>
+            <path d={`M${at(x - 3, t + 2.5)}L${at(x - 8.5, t + 10)}L${at(x + 8.5, t + 10)}L${at(x + 3, t + 2.5)}Z`} />
+            <path d={`M${at(x, t + 10)}V${kc([x, t + 17])[1]}`} fill="none" stroke={line} />
+            <circle cx={kc([x, t + 19.3])[0]} cy={kc([x, t + 19.3])[1]} r={r(2.3)} />
+          </>
+        )}
+        {crown === "antenna" && (
+          <path
+            d={`M${at(x, t + 2.5)}V${kc([x, t + 29])[1]}${[[8, 8.5], [13, 6.5], [18, 4.7], [23, 2.9]].map(([h, w]) => `M${at(x - w!, t + h!)}H${kc([x + w!, 0])[0]}`).join("")}`}
+            fill="none"
+            stroke={line}
+          />
+        )}
+      </g>
+    </g>
+  );
+}
+
+/**
+ * The KC skyline. Story scene: cream outline over the Pacific (defaults). Road to the Truck:
+ * `line` = ink on cream, no road, plus a lit "KANSAS CITY" sign across the base.
+ */
+export function KcArt({ line = LINE, filterId = "story-toon", road = true, sign = false }: { line?: string; filterId?: string; road?: boolean; sign?: boolean }) {
   const outline = `M${SKYLINE.map(kc).map(([x, y]) => `${f(x)} ${f(y)}`).join("L")}Q${f(kc([366, 18])[0])} ${f(kc([366, 18])[1])} ${f(kc([382, 0])[0])} ${f(kc([382, 0])[1])}Z`;
   const [ax, ay] = kc([120, 80]);
   const [sx, sy] = kc([283, 88]);
+  const [signX, signY] = kc([190, 3.5]);
   return (
-    <g stroke={LINE} strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round" filter="url(#story-toon)">
-      {/* four stacks on the left */}
-      {[2, 9, 16, 23].map((x, i) => {
-        const [px, py] = kc([x, 48 + (i % 2) * 5]);
-        return <rect key={x} x={f(px)} y={f(py)} width="3.8" height={f(KC_GROUND - py)} rx="1.5" fill={CITY} strokeWidth="2.5" />;
-      })}
+    <g stroke={line} strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round" filter={`url(#${filterId})`}>
+      {PYLONS.map((p) => (
+        <SkyStation key={p.x} {...p} line={line} />
+      ))}
       <path d={outline} fill={CITY} />
       <path d={`M${f(ax)} ${f(ay)}V${f(ay - 20)}M${f(sx)} ${f(sy)}V${f(sy - 12)}`} fill="none" strokeWidth="2.5" />
       <g fill={GOLD} stroke="none">
         {WINDOWS.map(kc).map(([x, y]) => (
           <rect key={`${x}-${y}`} x={f(x - 1.6)} y={f(y - 2.4)} width="3.2" height="4.8" rx="1" />
         ))}
+        {sign && (
+          <text x={f(signX)} y={f(signY)} textAnchor="middle" fontFamily="var(--font-anton)" fontSize="10" letterSpacing="3">
+            KANSAS CITY
+          </text>
+        )}
       </g>
       {/* the road the truck pulls in on */}
-      <path d={`M${KC_ROAD[0] - 40} ${KC_GROUND}H${f(kc([388, 0])[0])}`} fill="none" />
+      {road && <path d={`M${KC_ROAD[0] - 40} ${KC_GROUND}H${f(kc([388, 0])[0])}`} fill="none" />}
     </g>
   );
 }
 
-/** Hard offset shadow shared by both scenes — the "cartoon sticker" look. */
-export function ToonFilter() {
+/** Hard offset shadow shared by both scenes — the "cartoon sticker" look. One per <svg> (unique id). */
+export function ToonFilter({ id = "story-toon" }: { id?: string }) {
   return (
-    <filter id="story-toon" x="-10%" y="-10%" width="120%" height="120%">
+    <filter id={id} x="-10%" y="-10%" width="120%" height="120%">
       <feDropShadow dx="4" dy="4" stdDeviation="0" floodColor={INK} floodOpacity="0.5" />
     </filter>
   );
@@ -263,6 +326,6 @@ export function ToonFilter() {
  * Scene framing. Phones get a zoomed camera (same 565×330 aspect at both ends so the height never
  * jumps) that pans from Samoa, route start in view, to the skyline, truck on the road in view.
  */
-export const CAMERA = { full: "0 0 1000 480", samoa: "-30 145 565 330", kc: "492 -30 565 330" } as const;
+export const CAMERA = { full: "0 0 1000 480", samoa: "-30 145 565 330", kc: "478 -30 565 330" } as const;
 
-export const ROUTE = `M${f(APIA[0])} ${f(APIA[1])} C 400 350, 420 275, 482 262 S 530 ${KC_GROUND}, ${KC_ROAD[0]} ${KC_GROUND}`;
+export const ROUTE = `M${f(APIA[0])} ${f(APIA[1])} C 380 330, 400 270, 452 254 S 500 ${KC_GROUND}, ${KC_ROAD[0]} ${KC_GROUND}`;

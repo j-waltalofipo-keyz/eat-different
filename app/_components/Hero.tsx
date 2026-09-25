@@ -4,7 +4,7 @@ import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import Image from "next/image";
 import { useRef } from "react";
-import { Logo } from "./Logo";
+import { Logo, LOGO_REVEAL_AT } from "./Logo";
 
 gsap.registerPlugin(useGSAP);
 
@@ -48,7 +48,8 @@ export function Hero({ kitchenOpen }: { kitchenOpen: boolean }) {
       });
       mm.add("(prefers-reduced-motion: no-preference)", () => {
         gsap.from(dish.current, { y: 120, rotate: -25, autoAlpha: 0, duration: 1.1, ease: "power4.out", delay: 1.4 });
-        gsap.from("[data-hero-copy]", { y: 24, autoAlpha: 0, duration: 0.6, stagger: 0.1, delay: 2.1 });
+        // Copy waits until E.D. opens up, so nothing competes with the E.D. moment (D40).
+        gsap.from("[data-hero-copy]", { y: 24, autoAlpha: 0, duration: 0.6, stagger: 0.1, delay: LOGO_REVEAL_AT + 0.3 });
       });
     },
     { scope: root },

@@ -6,6 +6,7 @@ import gsap from "gsap";
 import { useRef, useState } from "react";
 import { formatUsd } from "@/execution/lib/money";
 import { MILESTONES, truckProgress } from "@/execution/site/milestones";
+import { KC_FRAME, KcArt, ToonFilter } from "./StoryArt";
 
 gsap.registerPlugin(useGSAP);
 
@@ -44,16 +45,14 @@ function Truck({ reached }: { reached: number[] }) {
   );
 }
 
+/** The same KC skyline as Eddie's story (StoryArt, D39): ink outline on cream + a lit sign. */
 function Skyline() {
-  const b = [[0, 50, 22], [24, 30, 18], [44, 64, 16], [62, 18, 24], [88, 40, 14], [104, 8, 12], [118, 36, 20], [140, 56, 26]] as const;
   return (
-    <svg viewBox="0 0 170 110" className="h-full w-full" aria-hidden>
-      {b.map(([x, y, w]) => (
-        <rect key={x} x={x} y={y} width={w} height={110 - y} fill="#0b0b0b" opacity="0.85" />
-      ))}
-      <text x="85" y="104" textAnchor="middle" fontFamily="var(--font-anton)" fontSize="12" fill="#f5b21a" letterSpacing="2">
-        KANSAS CITY
-      </text>
+    <svg viewBox={KC_FRAME} className="h-auto w-full overflow-visible" aria-hidden>
+      <defs>
+        <ToonFilter id="truck-toon" />
+      </defs>
+      <KcArt line="#0b0b0b" filterId="truck-toon" road={false} sign />
     </svg>
   );
 }
@@ -130,7 +129,7 @@ export function TruckRoad({ percent, donations, showChipIn = true }: { percent: 
             <span className={`font-display text-xs uppercase tracking-wider ${reached.includes(m.at) ? "" : "opacity-40"}`}>{m.label}</span>
           </div>
         ))}
-        <div className="absolute bottom-10 right-0 h-20 w-28 sm:h-36 sm:w-52">
+        <div className="absolute bottom-10 right-0 w-48 sm:w-[24rem]">
           <Skyline />
         </div>
         <div className="absolute bottom-10 h-24 w-36 -translate-x-1/2 transition-[left] duration-700 ease-out sm:h-28 sm:w-44" style={{ left: `${Math.max(12, Math.min(p, 66))}%` }}>

@@ -252,3 +252,25 @@
   - 1280×800: 76 / 304 / 799
   - 1366×768: 77 / 276 / 772
 - No horizontal scroll. Typecheck ✅, tests 67/67 ✅.
+
+### Phase S — Sky Stations, shared skyline, E.D. hold (2026-09-24, D39–D40)
+- SOP first: design-direction.md §3 (E.D. hold) and §6 (Sky Stations, shared skyline).
+- StoryArt: 4 Sky Stations on a Bartle Hall roof: tapered copper pylons, gold caps, 4 cable stays
+  each, and a unique gold sculpture per pylon, sized ~1.3× so they read small. The skyline moved
+  to fit (KC_X 637.8, scale 0.92). The road/truck end is now x 550, the route and phone camera
+  (`kc` frame x 478) were adjusted, and the Story label is centered at 790. `KcArt` takes
+  line/filterId/road/sign props, `ToonFilter` takes an id (one per <svg>), and `KC_FRAME` crops
+  to the skyline.
+- TruckRoad: the placeholder blocks were replaced with `KcArt` (ink line, "truck-toon" filter, no
+  road, with sign), 384×127 on desktop and 192×63 on phones, with the ground line on the road bar.
+- Logo: pulse after the crown plus an absolute reveal at `LOGO_REVEAL_AT`, and Hero copy delay is
+  derived from it. The browser pane throttles rAF (GSAP lag smoothing crawls), so I verified the
+  timeline in Node (.tmp/logo-timing.mjs):
+  - letters 0.25–1.04 s
+  - crown 1.04–1.74 s
+  - pulse 1.89–2.21 s
+  - dots collapse 2.95 s, words open 3.05–3.97 s
+  - hero copy 3.25 s
+- Typecheck ✅, tests 67/67 ✅, no horizontal scroll at 1280 or 375.
+- Noticed, not changed: on phones at 0% the Truck is clipped at the left edge (the 12% clamp is
+  narrower than half the truck's width). This predates today's work.

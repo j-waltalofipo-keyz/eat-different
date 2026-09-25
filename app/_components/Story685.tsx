@@ -98,7 +98,7 @@ export function Story685() {
         <text x="205" y="470" textAnchor="middle" fontFamily="var(--font-anton)" fontSize="20" fill="#f3ead8" letterSpacing="2">
           SAMOA · +685
         </text>
-        <text x="800" y="206" textAnchor="middle" fontFamily="var(--font-anton)" fontSize="20" fill="#f3ead8" letterSpacing="2">
+        <text x="790" y="206" textAnchor="middle" fontFamily="var(--font-anton)" fontSize="20" fill="#f3ead8" letterSpacing="2">
           KANSAS CITY · 816
         </text>
         <path d={ROUTE} fill="none" stroke="#f3ead8" strokeWidth="2" strokeDasharray="2 10" strokeLinecap="round" opacity="0.5" />
