@@ -74,17 +74,17 @@ export function Story685() {
 
   return (
     <section ref={root} id="eddie" className="relative flex min-h-dvh scroll-mt-16 flex-col justify-center overflow-hidden bg-pacific px-4 pb-8 pt-[4.75rem] sm:px-8 sm:pb-12">
-      <h2 className="font-display text-5xl uppercase leading-none short-phone:text-[2.75rem] sm:text-8xl">
+      <h2 className="font-display text-5xl uppercase leading-none short-phone:text-[min(2.75rem,12vw)] sm:text-8xl">
         From <span className="font-brush text-gold">685</span> to <span className="font-brush text-gold">816</span>
       </h2>
-      <p className="mt-3 max-w-xl text-cream/80">
+      <p className="mt-3 max-w-xl text-cream/80 tiny-phone:mt-2 tiny-phone:text-sm">
         Samoa&rsquo;s country code is +685. Kansas City&rsquo;s area code is 816. Eddie is everything in between.
       </p>
 
       <svg
         data-art
         viewBox={CAMERA.full}
-        className="mt-4 max-h-[36vh] w-full sm:mt-6 [&.camera]:-mx-4 [&.camera]:max-h-[27svh] short-phone:[&.camera]:max-h-[20svh] [&.camera]:w-[calc(100%+2rem)] [&.camera]:max-w-none"
+        className="mt-4 max-h-[36vh] w-full sm:mt-6 [&.camera]:-mx-4 [&.camera]:max-h-[27svh] short-phone:[&.camera]:max-h-[20svh] tiny-phone:mt-3 tiny-phone:[&.camera]:max-h-[18svh] [&.camera]:w-[calc(100%+2rem)] [&.camera]:max-w-none"
         aria-hidden
       >
         {Array.from({ length: 60 }, (_, i) => (
@@ -114,12 +114,12 @@ export function Story685() {
         </g>
       </svg>
 
-      <div data-slot className="mt-4 grid gap-4 sm:mt-6 [&.grid-stack>*]:[grid-area:1/1]">
+      <div data-slot className="mt-4 grid gap-4 tiny-phone:mt-3 sm:mt-6 [&.grid-stack>*]:[grid-area:1/1]">
         {BEATS.map((b, i) => (
-          <figure key={b.at} data-beat={i} className="m-0 max-w-2xl rounded-2xl bg-ink/40 p-5 backdrop-blur">
+          <figure key={b.at} data-beat={i} className="m-0 max-w-2xl rounded-2xl bg-ink/40 p-5 backdrop-blur tiny-phone:p-4">
             <p className="font-display uppercase tracking-widest text-gold">{b.at}</p>
-            <blockquote className="m-0 mt-2 text-cream/90 sm:text-lg">{b.text}</blockquote>
-            <figcaption className="mt-2 text-sm text-cream/60">— Eddie</figcaption>
+            <blockquote className="m-0 mt-2 text-cream/90 tiny-phone:mt-1 tiny-phone:text-[15px] sm:text-lg">{b.text}</blockquote>
+            <figcaption className="mt-2 text-sm text-cream/60 tiny-phone:mt-1">— Eddie</figcaption>
           </figure>
         ))}
       </div>

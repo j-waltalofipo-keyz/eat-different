@@ -299,3 +299,17 @@
   - 375×812: 98 / 219 / 778 (unchanged)
   - 1366×700: heading still 96 px
 - Typecheck ✅, tests 67/67 ✅. SOP: site-pages.md §7.
+
+### Fix — story card on 320 px phones (2026-09-24)
+- Analyze at 320×568: slot 398→690 (122 px over). The heading wrapped again at 44 px (needs
+  316 px, has 288) and was 92 px tall; intro 72, art 114, beat card 292.
+- Patch:
+  - short-phone heading is now `min(2.75rem, 12vw)`: 38.4 px at 320, 43.2 at 360, 44 at 375.
+  - New `tiny-phone` variant (<640 wide and ≤ 600 tall; declared after short-phone so it wins):
+    14 px intro, 15 px beat text, p-4 card, tighter gaps, art cap 18svh.
+- Test (slot bottom / viewport):
+  - 320×568: 552/568 ✓
+  - 360×640: 634/640 ✓
+  - 375×667: 640/667 ✓
+  - 375×812: 778 (unchanged)
+- No horizontal scroll. Typecheck ✅, tests 67/67 ✅. SOP: site-pages.md §7.

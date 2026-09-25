@@ -11,6 +11,8 @@
 
 /* Phones with little height (iPhone SE class). The pinned story must fit — site-pages.md §7. */
 @custom-variant short-phone (@media (max-width: 639px) and (max-height: 740px));
+/* …and the very short ones (320×568 class). Declared after short-phone so it wins. */
+@custom-variant tiny-phone (@media (max-width: 639px) and (max-height: 600px));
 
 @theme inline {
   --font-display: var(--font-anton), Impact, "Arial Narrow", sans-serif;
