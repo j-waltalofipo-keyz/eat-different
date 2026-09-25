@@ -11,15 +11,16 @@ minute" block; other sections render normally.
 
 | Order | Section | Data | States |
 |---|---|---|---|
+| 0 | Announcement bar | `announcement_on`, `announcement_text` (D44) | Thin gold strip above the nav, ink text, only when on + non-empty. Not dismissible |
 | 1 | Nav | cart count (browser) | Cart button hidden when empty |
-| 2 | Hero | `kitchen_open` | Open: gold dot "Kitchen's open — order for pickup". Closed: ember dot "Kitchen's closed — get an email when it opens" (jumps to notify form) |
+| 2 | Hero | `kitchen_open` | Open: gold dot "Kitchen's open — order for pickup". Closed: ember dot "Kitchen's closed — get an email when it opens" (jumps to notify form). With hours set, the closed pill adds the next usual opening, e.g. "usually back Fri 5 PM" (D42, America/Chicago) |
 | 3 | Ticker + siapo band | static | — |
-| 4 | Menu | `MenuItem[]`, `kitchen_open` | Tabs by category. Card → "Build your plate" sheet. Closed kitchen → sheet opens read-only, add button disabled "Kitchen's closed". Sold out → card dimmed, "Sold out" tag, no sheet |
+| 4 | Menu | `MenuItem[]`, `kitchen_open` | Tabs by category. Card → "Build your plate" sheet. Closed kitchen → sheet opens read-only, add button disabled "Kitchen's closed". Sold out → card dimmed, "Sold out" tag, no sheet. Intro names the public pickup area when set ("Pickup in {area}"; D43). "Drink of the day: {drink}" chip when set (D44), repeated in the sheet under the combo option. Photos: local crops object-contain, uploaded photos object-cover (menu-admin.md) |
 | 5 | Dad's quote band | static (D32) | — |
 | 6 | Road to the Truck | `FundProgress.percent`, donation presets/min/max | Parts per D27; bar to next part; "Chip in" presets + custom amount → `POST /api/donate` → redirect to Square. Always available (Invariant 4). Truck sits at the fund %, with its center kept between max(12%, half the truck width) and 66% so it never hangs off the road on phones; chip-in coins land on its real position |
 | 7 | From 685 to 816 | Eddie's beats (§10, verbatim) | Pinned scroll; ONE beat visible at a time in a shared slot (fits phones). Phones (<640 px, motion on): the art goes edge to edge and a camera (SVG viewBox) zooms in about 2× and follows the truck from Samoa to KC; height capped at 27svh so the pin fits. Short phones (`short-phone`: <640 px wide and ≤ 740 px tall) cap the art at 20svh and keep the heading on one line (min(2.75rem, 12vw)) so the whole beat card fits. Tiny phones (`tiny-phone`: also ≤ 600 px tall, e.g. 320×568) also get: 14 px intro, 15 px beat text, tighter card padding and gaps, and art capped at 18svh. All sizes: top padding clears the sticky nav while pinned; desktop art capped at 36vh. Reduced motion or no JS: whole scene, no pin, route drawn, all beats stacked |
 | 8 | Reviews | `listReviews` | Real reviews only (never samples). Empty: "Be the first to review E.D." "Leave a review" → form → `POST /api/reviews`; success "Fa'afetai!" + Google button only if `google_review_url` set (D30) |
-| 9 | Footer | — | Notify form → `POST /api/notify`; "Made with alofa in KC"; no socials (D30) |
+| 9 | Footer | hours, `pickup_area`, social links | "When & where": weekly hours grouped ("Fri–Sun · 5–9 PM") + hours note, pickup area. Social icons only for links that are set (D44; supersedes the "no socials" part of D30). Notify form → `POST /api/notify`; "Made with alofa in KC" |
 
 ## Build your plate (sheet)
 - Required SINGLE list (waffle): radio, must pick. Optional SINGLE (combo): toggle.

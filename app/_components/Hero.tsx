@@ -25,7 +25,7 @@ function Sticker() {
   );
 }
 
-export function Hero({ kitchenOpen }: { kitchenOpen: boolean }) {
+export function Hero({ kitchenOpen, nextOpen = null }: { kitchenOpen: boolean; nextOpen?: string | null }) {
   const root = useRef<HTMLElement>(null);
   const dish = useRef<HTMLDivElement>(null);
 
@@ -79,7 +79,10 @@ export function Hero({ kitchenOpen }: { kitchenOpen: boolean }) {
             </p>
           ) : (
             <p data-hero-copy className="mt-6 inline-flex items-center gap-2 rounded-full bg-cream/10 px-4 py-2 text-sm">
-              <span className="h-2.5 w-2.5 rounded-full bg-ember" /> Kitchen&rsquo;s closed — <a href="#notify" className="underline">get an email when it opens</a>
+              <span className="h-2.5 w-2.5 shrink-0 rounded-full bg-ember" />
+              <span>
+                Kitchen&rsquo;s closed{nextOpen && <> · usually back {nextOpen}</>} — <a href="#notify" className="underline">get an email when it opens</a>
+              </span>
             </p>
           )}
         </div>

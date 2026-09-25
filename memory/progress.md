@@ -313,3 +313,49 @@
   - 375×667: 640/667 ✓
   - 375×812: 778 (unchanged)
 - No horizontal scroll. Typecheck ✅, tests 67/67 ✅. SOP: site-pages.md §7.
+
+### Phase S — owner dashboard (2026-09-24, D41–D46)
+- **Owner answers:**
+  - Hours: display-only.
+  - Pickup: add a public area line.
+  - Extras: all four (banner, drink of the day, orders queue, socials), plus a Done/Undo queue spec.
+  - New dishes: use the existing option sets.
+- **SOPs first:** admin.md (rewritten), menu-admin.md and order-queue.md (new), site-pages.md,
+  CLAUDE.md schemas + Invariant 3 note.
+- **DB migration 003 (Supabase connector, additive):**
+  - settings: pickup_area, hours jsonb (7, CHECK), hours_note, announcement_on/text,
+    drink_of_the_day, instagram/tiktok/facebook_url
+  - orders.fulfilled_at + queue index
+  - menu_meta (RLS on)
+- **Tools:**
+  - site/hours: formatTime, formatRange, groupHours, kcClock, nextOpening
+  - admin/settingsForm: 6 card parsers + friendlyError
+  - admin/menuAdmin: parse, buildMenuItemUpsert, saveMenuItem, setMenuFlag, describeChoices
+  - assets/processPhoto (sharp, now a runtime dependency)
+  - orders: queueSort (pure, browser-safe), orderQueue (list + Square batchGet + setFulfilled)
+  - getMenu: Square images, meta flags, admin view, invalidateMenuCache
+  - toAlertLines shared by the email and the queue
+- **Tests:** 89 total (22 new in dashboard.test.ts; admin.test.ts updated).
+- **UI:**
+  - /admin Shell (kitchen switch + notify prompt, tabs)
+  - Orders (optimistic Done/Undo, 20 s auto-refresh, KC times)
+  - Menu (rows + switches)
+  - /admin/menu/new + /[itemId] DishEditor (drop/tap photo → browser shrink → live MenuCard preview)
+  - Site (banner preview, hours editor with summary, pickup public/private chips, links, notify)
+  - Fund, Reviews, restyled login
+  - MenuCard extracted and shared by the site and the preview
+- **Public site:** announcement bar, "usually back {day time}" in the closed pill, pickup area in
+  the menu intro, drink-of-the-day chip plus a combo hint in the sheet, footer "When & where" and
+  social icons.
+- **Browser-verified at 1280 and 375:**
+  - Orders Done → greyed at the bottom, Undo → back on top (DB fulfilled_at set/cleared)
+  - Hours save → footer + "usually back tomorrow 5 PM" on the home page, then reverted
+  - Add a dish end-to-end in the Square sandbox ("Test Dish", $14, Bowls, Add-ons, photo): Square
+    item + CatalogImage + menu_meta, and it shows on the public menu. Then hidden via the switch
+    (gone from home at once) and archived in Square (reversible).
+- **Found and fixed while verifying:**
+  - React form-reset desync (switch vs times)
+  - Orders "updated" clock hydration mismatch (server renderedAt)
+  - Mixed Mountain/Central times (all KC now)
+  - Phone top bar wrapping
+- `next build` ✅ (all admin routes ƒ). Typecheck ✅.

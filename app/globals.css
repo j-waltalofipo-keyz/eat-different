@@ -30,3 +30,9 @@ body {
   from { transform: translateX(0); }
   to { transform: translateX(-50%); }
 }
+
+/* /admin: new order cards ease in (order-queue.md). Reduced motion users get no animation (motion-safe). */
+@keyframes fadein {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: none; }
+}

@@ -1,4 +1,5 @@
 // SOP: architecture/owner-alert-email.md. Sent once per payment (caller checks firstTime).
+import type { Square } from "square";
 import { mailer, square } from "../lib/clients";
 import { getEnv } from "../lib/env";
 import { escapeHtml } from "../lib/html";
@@ -7,7 +8,8 @@ import type { OrderRow, PaymentFacts } from "../schemas";
 
 export const FROM = "Eat. Different. <onboarding@resend.dev>";
 
-export type AlertLine = { qty: number; name: string; modifiers: { qty: number; name: string }[] };
+import type { AlertLine } from "./alertLines";
+export type { AlertLine };
 export type OwnerAlertInput =
   | {
       kind: "FOOD";
@@ -21,6 +23,18 @@ export type OwnerAlertInput =
   | { kind: "DONATION"; receiptNumber: string | null; amountCents: number };
 
 export type Email = { subject: string; text: string; html: string };
+
+/** Pure. What a Square order actually contains — shared with the Orders tab (order-queue.md). */
+export function toAlertLines(sq: Square.Order | undefined): { lines: AlertLine[]; note: string | null } {
+  return {
+    note: sq?.fulfillments?.[0]?.pickupDetails?.note ?? null,
+    lines: (sq?.lineItems ?? []).map((l) => ({
+      qty: Number(l.quantity),
+      name: l.name ?? "Item",
+      modifiers: (l.modifiers ?? []).map((m) => ({ qty: Number(m.quantity ?? 1), name: m.name ?? "Option" })),
+    })),
+  };
+}
 
 /** Pure. */
 export function buildOwnerAlertEmail(i: OwnerAlertInput): Email {
@@ -76,12 +90,7 @@ export async function sendOwnerAlert(order: OrderRow, payment: PaymentFacts): Pr
       totalCents: payment.totalCents,
       tipCents: payment.tipCents,
       customerName: order.customer_name,
-      note: sq?.fulfillments?.[0]?.pickupDetails?.note ?? null,
-      lines: (sq?.lineItems ?? []).map((l) => ({
-        qty: Number(l.quantity),
-        name: l.name ?? "Item",
-        modifiers: (l.modifiers ?? []).map((m) => ({ qty: Number(m.quantity ?? 1), name: m.name ?? "Option" })),
-      })),
+      ...toAlertLines(sq),
     };
   }
   const email = buildOwnerAlertEmail(input);

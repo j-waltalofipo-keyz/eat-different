@@ -88,3 +88,24 @@
 ### UX flag for Phase S
 - Public fund shows one decimal: $15 raised = 0.036% → displays **0%**. It first shows 0.1% at
   $4,200. Decide in Phase S how to make early progress visible without exposing dollars.
+
+## Owner dashboard (2026-09-24)
+- **Square ignores app-set `sold_out`.** The SDK docs for ItemVariationLocationOverrides.soldOut say
+  "Attempts by an application to set this attribute are ignored." So "Sold out tonight" is a
+  website-only flag in `menu_meta`, OR'd with Square's own flag.
+- **Square catalog images accept JPEG/PNG/GIF only (≤ 15 MB).** We always send JPEG after sharp.
+  Hosts seen: sandbox `items-images-sandbox.s3.us-west-2.amazonaws.com/files/…/original.jpeg`
+  (verified 2026-09-24); production is expected at `items-images-production.s3.us-west-2.amazonaws.com`.
+  Both are in `next.config` `images.remotePatterns`. **Verify the production host on the first
+  real upload.**
+- **Square order completion is terminal**, so the Orders tab "Done" is website-only (`orders.fulfilled_at`).
+- **Server Actions default body limit is 1 MB and Vercel's request cap is 4.5 MB.** Photos are shrunk
+  in the browser (≤ 1600 px JPEG, typically 0.03–0.8 MB); `bodySizeLimit` is set to 5 MB for headroom.
+- **React resets `<form action>` after every action.** This desynced controlled switches, so
+  dashboard forms use `submitKeepingValues`. The lesson is in admin.md.
+- **Separate module caches in dev:** a route handler (`/api/menu`) and the RSC/action layer each
+  hold their own `getMenu` cache. The home page updates at once after an admin change;
+  `/api/menu` may lag ≤ 60 s. Checkout always reads fresh.
+- **Dev-only log noise:** Next logs "Failed to generate cache key for …/catalog/images" during a photo
+  upload. It comes from the dev HMR cache trying to key a multipart fetch. The upload succeeds,
+  and production doesn't run this path.

@@ -51,7 +51,8 @@ Square **Sandbox** for all development; production keys only in Phase T.
 2. **Server re-prices every cart** from the Square Catalog. Client-sent prices are ignored.
 3. **Home pickup address is never public.** Stored only in `settings` (service-role only). Shown
    only on `/order/<token>` (unguessable 32-byte token; only its SHA-256 hash is stored) after
-   the server confirms with Square the payment is COMPLETED.
+   the server confirms with Square the payment is COMPLETED. A public **pickup area** (neighborhood
+   only, owner-typed) may be shown to everyone (D43); the address itself never is.
 4. **Kitchen Open toggle** off → food checkout returns HTTP 409, menu is view-only, notify-me
    signup shown. **Donations stay open either way.**
 5. **Truck fund:**
@@ -126,7 +127,7 @@ Square **Sandbox** for all development; production keys only in Phase T.
 ```
 orders          square_order_id PK, kind FOOD|DONATION, square_payment_id, receipt_number,
                 buyer_email, customer_name, total_cents, status PENDING|PAID|REFUNDED,
-                view_token_hash, created_at, paid_at
+                view_token_hash, created_at, paid_at, fulfilled_at (website-only "Done", D45)
 fund_ledger     id, square_order_id, reason ORDER|DONATION|REFUND, amount_cents, created_at,
                 UNIQUE(square_order_id, reason)
 reviews         id, square_order_id UNIQUE, display_name(≤40), rating 1–5, body(10–1000),
@@ -135,7 +136,12 @@ notify_signups  email UNIQUE, created_at, unsubscribed_at
 webhook_events  event_id PK, type, received_at
 settings (1 row) kitchen_open, fund_per_order_cents=500, fund_goal_cents=4200000,
                 donation_presets_cents=[500,1000,2500,5000], donation_min_cents=100,
-                donation_max_cents=100000, pickup_address, pickup_instructions, google_review_url
+                donation_max_cents=100000, pickup_address, pickup_instructions, google_review_url,
+                pickup_area (public), hours jsonb [7 × {open,close}|null, Mon→Sun, display-only D42],
+                hours_note, announcement_on, announcement_text, drink_of_the_day,
+                instagram_url, tiktok_url, facebook_url
+menu_meta       square_item_id PK, seed_key, subtitle, hidden bool, sold_out bool, updated_at
+                (website-only presentation + flags; Square stays the menu truth — D46)
 ```
 
 ## Menu Rules (source: `architecture/menu-seed.json`)
@@ -150,7 +156,7 @@ settings (1 row) kitchen_open, fund_per_order_cents=500, fund_goal_cents=4200000
 | Trigger | Type | Fires |
 |---|---|---|
 | Square `payment.updated`, `refund.updated` → `/api/webhooks/square` | event | record payment/refund, ledger, owner email |
-| `/admin` buttons (kitchen toggle, "we're open" alert, hide review) | manual | owner-initiated only |
+| `/admin` dashboard (kitchen switch, orders Done/Undo, menu add/edit/sold-out/hide, site content, fund, "we're open" alert, hide review) | manual | owner-initiated only |
 | git push → Vercel | deploy | rebuild + redeploy |
 
 ## Self-Annealing Repair Loop

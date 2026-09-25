@@ -59,7 +59,7 @@ function SingleList({ list, sel, setSel }: { list: ModifierList; sel: Selection;
   );
 }
 
-export function PlateSheet({ item, kitchenOpen, onClose }: { item: MenuItem; kitchenOpen: boolean; onClose: () => void }) {
+export function PlateSheet({ item, kitchenOpen, drink = null, onClose }: { item: MenuItem; kitchenOpen: boolean; drink?: string | null; onClose: () => void }) {
   const { dispatch, setDrawerOpen } = useCart();
   const [sel, setSel] = useState<Selection>({});
   const [qty, setQty] = useState(1);
@@ -110,6 +110,11 @@ export function PlateSheet({ item, kitchenOpen, onClose }: { item: MenuItem; kit
                 {list.required ? "pick one" : list.selection === "SINGLE" ? "optional" : `optional, up to ${list.maxQtyPerOption} each`}
               </span>
             </h4>
+            {drink && list.options.some((o) => /drink of the day/i.test(o.name)) && (
+              <p className="-mt-1 text-sm text-cream/70">
+                Today&rsquo;s drink: <strong className="text-gold">{drink}</strong>
+              </p>
+            )}
             {list.selection === "SINGLE" ? (
               <SingleList list={list} sel={sel} setSel={setSel} />
             ) : (

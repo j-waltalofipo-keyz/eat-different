@@ -72,7 +72,11 @@ the truck-fund tracker ($5/order, 100% of donations, $42,000 goal, public % only
 - [x] Eddie's answers applied to design-direction.md + /concept story cards
 - [ ] Receive Eddie's photos: menu image, dish photos, photo of Eddie, E.D. logo file → `reference/`
 - [x] Pages built: / (menu, cart, tracker, story, reviews, notify), /order/[token] (no-referrer), /donate/thanks — functional checks ✅
-- [ ] Admin page styling pass
+- [x] **Owner dashboard** (D41–D46, 2026-09-24): tabbed /admin — kitchen switch + notify prompt,
+      Orders queue (Done/Undo), Menu (add/edit dish → Square with photo + live card preview,
+      sold-out-tonight + show/hide), Site (banner, drink of the day, hours, pickup area/address, links),
+      Fund, Reviews; public site shows banner, hours, pickup area, drink, socials
+- [ ] Wipe `menu_meta` test row (archived sandbox "Test Dish") in the Phase T wipe
 - [x] SOP + tool: crop-menu → 6 interim dish photos wired into menu + hero (D35, 2026-09-24)
 - [x] Interactive: logo reveal, pointer-tilt dish, sizzle cards, dad-quote words, truck parts, coin drop, pinned 685→816
 - [ ] Branded owner-alert emails
@@ -83,7 +87,7 @@ the truck-fund tracker ($5/order, 100% of donations, $42,000 goal, public % only
 - [ ] Register Square webhook (payment.updated, refund.updated)
 - [ ] Sandbox E2E: food order + $10 donation (owner enters test card)
 - [ ] **Wipe test data** from Supabase (orders, fund_ledger, reviews, notify_signups,
-      webhook_events; reset settings) — dev and prod share one project
+      webhook_events, menu_meta; reset settings) — dev and prod share one project
 - [ ] Owner sign-off → production keys → seed production catalog
 - [ ] First real order + donation land → **Complete**
 - [ ] Finalize Triggers + Maintenance Log in CLAUDE.md

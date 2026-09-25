@@ -2,7 +2,9 @@
 import { getFundProgress } from "@/execution/fund/computeProgress";
 import { listReviews } from "@/execution/reviews/listReviews";
 import { getSettings } from "@/execution/settings";
+import { groupHours, nextOpening } from "@/execution/site/hours";
 import { getMenu } from "@/execution/square/getMenu";
+import { AnnouncementBar } from "./_components/AnnouncementBar";
 import { SiapoBand, Ticker } from "./_components/Bands";
 import { CartDrawer } from "./_components/cart/CartDrawer";
 import { CartProvider } from "./_components/cart/CartProvider";
@@ -33,12 +35,13 @@ export default async function Home() {
 
   return (
     <CartProvider>
+      {settings.announcement_on && settings.announcement_text && <AnnouncementBar text={settings.announcement_text} />}
       <Nav />
       <main>
-        <Hero kitchenOpen={settings.kitchen_open} />
+        <Hero kitchenOpen={settings.kitchen_open} nextOpen={settings.kitchen_open ? null : nextOpening(settings.hours, new Date())} />
         <Ticker />
         <SiapoBand id="siapo-1" />
-        <Menu items={menu} kitchenOpen={settings.kitchen_open} />
+        <Menu items={menu} kitchenOpen={settings.kitchen_open} pickupArea={settings.pickup_area} drink={settings.drink_of_the_day} />
         <SiapoBand id="siapo-2" />
         <DadQuote />
         <TruckRoad
@@ -57,7 +60,15 @@ export default async function Home() {
           googleReviewUrl={settings.google_review_url}
         />
       </main>
-      <Footer kitchenOpen={settings.kitchen_open} />
+      <Footer
+        kitchenOpen={settings.kitchen_open}
+        info={{
+          hours: groupHours(settings.hours),
+          hoursNote: settings.hours_note,
+          pickupArea: settings.pickup_area,
+          socials: { instagram: settings.instagram_url, tiktok: settings.tiktok_url, facebook: settings.facebook_url },
+        }}
+      />
       <CartDrawer kitchenOpen={settings.kitchen_open} />
     </CartProvider>
   );

@@ -1,37 +1,14 @@
 // SOP: architecture/admin.md → Actions. Every caller must have verified the admin session first.
-import { z } from "zod";
 import { db } from "../lib/clients";
-
-const text = z.string().trim().max(500).transform((s) => s || null);
-
-export const SettingsUpdateSchema = z
-  .object({
-    fund_per_order_cents: z.number().int().min(0),
-    fund_goal_cents: z.number().int().positive(),
-    donation_min_cents: z.number().int().min(100),
-    donation_max_cents: z.number().int().positive(),
-    donation_presets_cents: z.array(z.number().int()).max(6),
-    pickup_address: text,
-    pickup_instructions: text,
-    google_review_url: z
-      .string()
-      .trim()
-      .transform((s) => s || null)
-      .refine((s) => s === null || /^https:\/\/\S+$/.test(s), "must be an https link"),
-  })
-  .refine((s) => s.donation_min_cents <= s.donation_max_cents, { path: ["donation_max_cents"], message: "max must be ≥ min" })
-  .refine((s) => s.donation_presets_cents.every((p) => p >= s.donation_min_cents && p <= s.donation_max_cents), {
-    path: ["donation_presets_cents"],
-    message: "presets must be within min..max",
-  });
-export type SettingsUpdate = z.infer<typeof SettingsUpdateSchema>;
+import type { SettingsPatch } from "./settingsForm";
 
 export async function setKitchenOpen(open: boolean): Promise<void> {
   const { error } = await db().from("settings").update({ kitchen_open: open, updated_at: new Date().toISOString() }).eq("id", 1);
   if (error) throw new Error(`settings update: ${error.message}`);
 }
 
-export async function updateSettings(patch: SettingsUpdate): Promise<void> {
+/** One dashboard card's validated patch (settingsForm.ts). */
+export async function updateSettings(patch: SettingsPatch): Promise<void> {
   const { error } = await db().from("settings").update({ ...patch, updated_at: new Date().toISOString() }).eq("id", 1);
   if (error) throw new Error(`settings update: ${error.message}`);
 }
@@ -61,13 +38,15 @@ export async function listAllReviews(): Promise<AdminReview[]> {
   }));
 }
 
-/** Private to /admin: dollars never leave this page. */
-export async function getAdminStats(): Promise<{ fundTotalCents: number; subscribers: number }> {
-  const [fund, subs] = await Promise.all([
+/** Private to /admin: dollars never leave this page. `waiting` = paid food orders not yet Done (tab badge). */
+export async function getAdminStats(): Promise<{ fundTotalCents: number; subscribers: number; waiting: number }> {
+  const [fund, subs, waiting] = await Promise.all([
     db().from("fund_total").select("total_cents").single(),
     db().from("notify_signups").select("email", { count: "exact", head: true }).is("unsubscribed_at", null),
+    db().from("orders").select("square_order_id", { count: "exact", head: true }).eq("kind", "FOOD").eq("status", "PAID").is("fulfilled_at", null),
   ]);
   if (fund.error) throw new Error(`fund_total: ${fund.error.message}`);
   if (subs.error) throw new Error(`notify_signups count: ${subs.error.message}`);
-  return { fundTotalCents: Number(fund.data.total_cents ?? 0), subscribers: subs.count ?? 0 };
+  if (waiting.error) throw new Error(`orders count: ${waiting.error.message}`);
+  return { fundTotalCents: Number(fund.data.total_cents ?? 0), subscribers: subs.count ?? 0, waiting: waiting.count ?? 0 };
 }

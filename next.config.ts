@@ -1,6 +1,17 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  images: {
+    // Dish photos uploaded from /admin live on Square's image hosts (menu-admin.md).
+    remotePatterns: [
+      { protocol: "https", hostname: "items-images-production.s3.us-west-2.amazonaws.com", pathname: "/files/**" },
+      { protocol: "https", hostname: "items-images-sandbox.s3.us-west-2.amazonaws.com", pathname: "/files/**" },
+    ],
+  },
+  experimental: {
+    // Phone photos are shrunk in the browser first; this is headroom for the multipart overhead (menu-admin.md).
+    serverActions: { bodySizeLimit: "5mb" },
+  },
   async headers() {
     return [
       {

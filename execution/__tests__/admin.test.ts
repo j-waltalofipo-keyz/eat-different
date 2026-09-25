@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { ZodError } from "zod";
 import { checkPassword, issueSession, SESSION_MS, sessionKey, verifySession } from "../admin/session";
-import { parseSettingsForm } from "../admin/settingsForm";
+import { parseFundForm, parseLinksForm, parsePickupForm } from "../admin/settingsForm";
 
 const SECRET = "s".repeat(43);
 const KEY = sessionKey(SECRET, "correct horse battery");
@@ -33,43 +33,53 @@ describe("admin session", () => {
   });
 });
 
-describe("admin settings form", () => {
+describe("admin fund + pickup + links cards", () => {
   const base: Record<string, string> = {
     fund_per_order: "5.00",
     fund_goal: "$42,000",
     donation_min: "1",
     donation_max: "1000",
     donation_presets: "5, 10, 25, 50",
+    pickup_area: " Waldo, KC ",
     pickup_address: "  123 Home St  ",
     pickup_instructions: "",
     google_review_url: "",
+    instagram_url: "https://instagram.com/eatdifferent",
+    tiktok_url: "",
+    facebook_url: "",
   };
-  const parse = (over: Record<string, string> = {}) => parseSettingsForm((n) => ({ ...base, ...over })[n]);
+  const get = (over: Record<string, string> = {}) => (n: string) => ({ ...base, ...over })[n];
 
-  it("converts dollars to cents, trims text, empties → null", () => {
-    expect(parse()).toEqual({
+  it("fund: converts dollars to cents", () => {
+    expect(parseFundForm(get())).toEqual({
       fund_per_order_cents: 500,
       fund_goal_cents: 4_200_000,
       donation_min_cents: 100,
       donation_max_cents: 100_000,
       donation_presets_cents: [500, 1000, 2500, 5000],
-      pickup_address: "123 Home St",
-      pickup_instructions: null,
+    });
+  });
+  it("pickup + links: trims text, empties → null", () => {
+    expect(parsePickupForm(get())).toEqual({ pickup_area: "Waldo, KC", pickup_address: "123 Home St", pickup_instructions: null });
+    expect(parseLinksForm(get())).toEqual({
       google_review_url: null,
+      instagram_url: "https://instagram.com/eatdifferent",
+      tiktok_url: null,
+      facebook_url: null,
     });
   });
   it("rejects bad values", () => {
-    const bad: Record<string, string>[] = [
+    const badFund: Record<string, string>[] = [
       { fund_goal: "0" },
       { fund_per_order: "-1" },
       { fund_per_order: "abc" },
       { donation_min: "0.50" }, // below Square's $1 minimum
       { donation_min: "50", donation_max: "10" },
       { donation_presets: "5, 2000" }, // preset above max
-      { google_review_url: "http://not-https.example" },
     ];
-    for (const over of bad) {
-      expect(() => parse(over), JSON.stringify(over)).toThrow(ZodError);
-    }
+    for (const over of badFund) expect(() => parseFundForm(get(over)), JSON.stringify(over)).toThrow(ZodError);
+    expect(() => parseLinksForm(get({ google_review_url: "http://not-https.example" }))).toThrow(ZodError);
+    expect(() => parseLinksForm(get({ tiktok_url: "tiktok.com/@ed" }))).toThrow(ZodError);
+    expect(() => parsePickupForm(get({ pickup_area: "x".repeat(61) }))).toThrow(ZodError);
   });
 });

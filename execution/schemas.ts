@@ -87,6 +87,19 @@ export type ReviewSubmit = z.infer<typeof ReviewSubmitSchema>;
 export const NotifySchema = z.object({ email });
 
 // ---- Database rows -----------------------------------------------------------
+/** "HH:MM", 24 h. */
+export const HHMM = /^([01]\d|2[0-3]):[0-5]\d$/;
+/** One day of display-only hours (D42): closed (null) or open → close, same day. */
+export const DayHoursSchema = z
+  .object({ open: z.string().regex(HHMM), close: z.string().regex(HHMM) })
+  .refine((d) => d.close > d.open, { message: "closing time must be after opening time" })
+  .nullable();
+/** Mon → Sun. */
+export const WeekHoursSchema = z.array(DayHoursSchema).length(7);
+export type DayHours = z.infer<typeof DayHoursSchema>;
+export type WeekHours = z.infer<typeof WeekHoursSchema>;
+export const CLOSED_WEEK: WeekHours = [null, null, null, null, null, null, null];
+
 export const SettingsSchema = z.object({
   kitchen_open: z.boolean(),
   fund_per_order_cents: z.number().int(),
@@ -97,6 +110,15 @@ export const SettingsSchema = z.object({
   pickup_address: z.string().nullable(),
   pickup_instructions: z.string().nullable(),
   google_review_url: z.string().nullable(),
+  pickup_area: z.string().nullable(),
+  hours: WeekHoursSchema.catch(CLOSED_WEEK), // tolerant read: bad data shows as "no hours", never a crash
+  hours_note: z.string().nullable(),
+  announcement_on: z.boolean(),
+  announcement_text: z.string().nullable(),
+  drink_of_the_day: z.string().nullable(),
+  instagram_url: z.string().nullable(),
+  tiktok_url: z.string().nullable(),
+  facebook_url: z.string().nullable(),
 });
 export type Settings = z.infer<typeof SettingsSchema>;
 
