@@ -62,6 +62,7 @@ gold** → ember is for large text (≥ 24 px bold) and non-text accents only, n
     right: 4 smokestacks, low blocks, an antenna tower, stepped-crown One KC Place, Town
     Pavilion, a slender tower, the Power & Light stepped crown, then the right-hand towers down
     to the hill. The route ends on the road at its base.
+  - **Phones:** a camera pans from Samoa to KC with the truck (site-pages.md §7), so the art is about 2× bigger (owner request, D38).
 - **Siapo-inspired bands.** Geometric patterns inspired by *siapo* (Samoan bark-cloth art)
   as section dividers that draw themselves in. We deliberately avoid *tatau* (tattoo) motifs —
   they're personal and sacred — unless Eddie wants something specific.

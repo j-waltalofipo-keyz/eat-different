@@ -259,4 +259,10 @@ export function ToonFilter() {
   );
 }
 
+/**
+ * Scene framing. Phones get a zoomed camera (same 565×330 aspect at both ends so the height never
+ * jumps) that pans from Samoa, route start in view, to the skyline, truck on the road in view.
+ */
+export const CAMERA = { full: "0 0 1000 480", samoa: "-30 145 565 330", kc: "492 -30 565 330" } as const;
+
 export const ROUTE = `M${f(APIA[0])} ${f(APIA[1])} C 400 350, 420 275, 482 262 S 530 ${KC_GROUND}, ${KC_ROAD[0]} ${KC_GROUND}`;

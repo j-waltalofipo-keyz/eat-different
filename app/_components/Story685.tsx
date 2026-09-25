@@ -1,13 +1,14 @@
 "use client";
 // SOP: architecture/site-pages.md §7 + design-direction.md §10. Eddie's exact words (D29).
 // Art: StoryArt.tsx (D36). Motion: pinned scroll draws Samoa → KC and shows ONE beat at a time in a shared slot (fits phones).
-// No JS / reduced motion: route fully drawn, all beats stacked.
+// Phones: a viewBox camera zooms in and follows the truck, Samoa → KC (art ~2× bigger).
+// No JS / reduced motion: whole scene, route fully drawn, all beats stacked.
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { MotionPathPlugin } from "gsap/MotionPathPlugin";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useRef } from "react";
-import { KcArt, ROUTE, SamoaArt, ToonFilter } from "./StoryArt";
+import { CAMERA, KcArt, ROUTE, SamoaArt, ToonFilter } from "./StoryArt";
 
 gsap.registerPlugin(useGSAP, ScrollTrigger, MotionPathPlugin);
 
@@ -33,11 +34,22 @@ export function Story685() {
     () => {
       const path = root.current!.querySelector<SVGPathElement>("[data-route]")!;
       const slot = root.current!.querySelector<HTMLElement>("[data-slot]")!;
+      const art = root.current!.querySelector<SVGSVGElement>("[data-art]")!;
       const len = path.getTotalLength();
       const mm = gsap.matchMedia();
 
-      mm.add("(prefers-reduced-motion: no-preference)", () => {
+      mm.add({ motion: "(prefers-reduced-motion: no-preference)", phone: "(max-width: 639px)" }, (ctx) => {
+        const { motion, phone } = ctx.conditions as { motion: boolean; phone: boolean };
+        if (!motion) {
+          gsap.set("[data-truck]", { motionPath: { path, align: path, alignOrigin: [0.5, 0.8], end: 1 } });
+          return;
+        }
         slot.classList.add("grid-stack");
+        // Camera first, so the pin measures the final layout.
+        if (phone) {
+          art.classList.add("camera");
+          art.setAttribute("viewBox", CAMERA.samoa);
+        }
         gsap.set(path, { strokeDasharray: len, strokeDashoffset: len });
         gsap.set("[data-beat='1'], [data-beat='2']", { autoAlpha: 0, y: 24 });
         const tl = gsap.timeline({
@@ -49,17 +61,19 @@ export function Story685() {
           .to("[data-beat='1']", { autoAlpha: 1, y: 0, duration: 0.25 }, 1.05)
           .to("[data-beat='1']", { autoAlpha: 0, y: -24, duration: 0.25 }, 1.9)
           .to("[data-beat='2']", { autoAlpha: 1, y: 0, duration: 0.25 }, 2.05);
-        return () => slot.classList.remove("grid-stack");
-      });
-      mm.add("(prefers-reduced-motion: reduce)", () => {
-        gsap.set("[data-truck]", { motionPath: { path, align: path, alignOrigin: [0.5, 0.8], end: 1 } });
+        if (phone) tl.to(art, { attr: { viewBox: CAMERA.kc }, ease: "none", duration: 3 }, 0);
+        return () => {
+          slot.classList.remove("grid-stack");
+          art.classList.remove("camera");
+          art.setAttribute("viewBox", CAMERA.full);
+        };
       });
     },
     { scope: root },
   );
 
   return (
-    <section ref={root} id="eddie" className="relative flex min-h-dvh scroll-mt-16 flex-col justify-center overflow-hidden bg-pacific px-4 py-12 sm:px-8">
+    <section ref={root} id="eddie" className="relative flex min-h-dvh scroll-mt-16 flex-col justify-center overflow-hidden bg-pacific px-4 pb-8 pt-[4.75rem] sm:px-8 sm:pb-12">
       <h2 className="font-display text-5xl uppercase leading-none sm:text-8xl">
         From <span className="font-brush text-gold">685</span> to <span className="font-brush text-gold">816</span>
       </h2>
@@ -67,7 +81,12 @@ export function Story685() {
         Samoa&rsquo;s country code is +685. Kansas City&rsquo;s area code is 816. Eddie is everything in between.
       </p>
 
-      <svg viewBox="0 0 1000 480" className="mt-6 max-h-[38vh] w-full" aria-hidden>
+      <svg
+        data-art
+        viewBox={CAMERA.full}
+        className="mt-4 max-h-[36vh] w-full sm:mt-6 [&.camera]:-mx-4 [&.camera]:max-h-[27svh] [@media(max-height:740px)]:[&.camera]:max-h-[20svh] [&.camera]:w-[calc(100%+2rem)] [&.camera]:max-w-none"
+        aria-hidden
+      >
         {Array.from({ length: 60 }, (_, i) => (
           <circle key={i} cx={(i * 97) % 1000} cy={40 + ((i * 53) % 420)} r="1.6" fill="#f3ead8" opacity="0.18" />
         ))}
@@ -95,7 +114,7 @@ export function Story685() {
         </g>
       </svg>
 
-      <div data-slot className="mt-6 grid gap-4 [&.grid-stack>*]:[grid-area:1/1]">
+      <div data-slot className="mt-4 grid gap-4 sm:mt-6 [&.grid-stack>*]:[grid-area:1/1]">
         {BEATS.map((b, i) => (
           <figure key={b.at} data-beat={i} className="m-0 max-w-2xl rounded-2xl bg-ink/40 p-5 backdrop-blur">
             <p className="font-display uppercase tracking-widest text-gold">{b.at}</p>

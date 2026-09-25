@@ -233,3 +233,22 @@
   1280 and 375 px: renders, truck follows the new route, no horizontal scroll, no app console errors
   (only dev HMR websocket noise). Art stays small on phones (SVG capped at 38vh; labels ~7 px).
 - DadQuote footer + aria-label → "Karl David, Eddie's dad".
+
+### Phase S — story art bigger on phones (2026-09-24, D38)
+- SOPs first: site-pages.md §7, design-direction.md §6.
+- Measured at 375×812: only about 54 px of spare height, so scaling the whole scene would give just
+  about 1.3×. Instead, a viewBox camera (565×330, same aspect at both ends) tweens from Samoa to KC
+  on the same scrubbed timeline as the truck.
+- Phone art is now 375×219, edge to edge (was 343×165). Each scene unit draws at 0.66 px (was 0.34).
+- gsap.matchMedia now uses conditions (motion, phone). The camera class and viewBox are set before
+  the pin is created, and cleanup restores the full viewBox.
+- Fixed a bug found along the way: while pinned, the sticky nav (68 px) covered the top of
+  "From 685 to 816" on desktop and on the new phone layout. The top padding is now 4.75rem at all
+  sizes, and desktop art is capped at 36vh (was 38vh) so 768 px laptops still fit.
+- Measured results (heading top / art height / beats-slot bottom):
+  - 375×812: 77 / 219 / 778 — fits
+  - 375×667: 76 / 133 at the 20svh cap / 692. Beat 3's "— Eddie" line is about 5 px short
+    (before: about 44 px cut and the heading hidden).
+  - 1280×800: 76 / 304 / 799
+  - 1366×768: 77 / 276 / 772
+- No horizontal scroll. Typecheck ✅, tests 67/67 ✅.

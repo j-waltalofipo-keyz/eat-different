@@ -17,7 +17,7 @@ minute" block; other sections render normally.
 | 4 | Menu | `MenuItem[]`, `kitchen_open` | Tabs by category. Card → "Build your plate" sheet. Closed kitchen → sheet opens read-only, add button disabled "Kitchen's closed". Sold out → card dimmed, "Sold out" tag, no sheet |
 | 5 | Dad's quote band | static (D32) | — |
 | 6 | Road to the Truck | `FundProgress.percent`, donation presets/min/max | Parts per D27; bar to next part; "Chip in" presets + custom amount → `POST /api/donate` → redirect to Square. Always available (Invariant 4) |
-| 7 | From 685 to 816 | Eddie's beats (§10, verbatim) | Pinned scroll; ONE beat visible at a time in a shared slot (fits phones). Reduced motion: no pin, route drawn, all beats stacked |
+| 7 | From 685 to 816 | Eddie's beats (§10, verbatim) | Pinned scroll; ONE beat visible at a time in a shared slot (fits phones). Phones (<640 px, motion on): the art goes edge to edge and a camera (SVG viewBox) zooms in about 2× and follows the truck from Samoa to KC; height capped at 27svh (20svh on screens ≤ 740 px tall) so the pin fits. All sizes: top padding clears the sticky nav while pinned; desktop art capped at 36vh. Reduced motion or no JS: whole scene, no pin, route drawn, all beats stacked |
 | 8 | Reviews | `listReviews` | Real reviews only (never samples). Empty: "Be the first to review E.D." "Leave a review" → form → `POST /api/reviews`; success "Fa'afetai!" + Google button only if `google_review_url` set (D30) |
 | 9 | Footer | — | Notify form → `POST /api/notify`; "Made with alofa in KC"; no socials (D30) |
 
