@@ -36,18 +36,23 @@ export function Hero({ kitchenOpen, nextOpen = null }: { kitchenOpen: boolean; n
         const rx = gsap.quickTo(dish.current, "rotationY", { duration: 0.6, ease: "power3" });
         const ry = gsap.quickTo(dish.current, "rotationX", { duration: 0.6, ease: "power3" });
         const x = gsap.quickTo(dish.current, "x", { duration: 0.8, ease: "power3" });
+        const chefX = gsap.quickTo("[data-chef-eddie]", "x", { duration: 0.9, ease: "power2" });
+        const chefY = gsap.quickTo("[data-chef-eddie]", "y", { duration: 0.9, ease: "power2" });
         const move = (e: PointerEvent) => {
           const nx = e.clientX / window.innerWidth - 0.5;
           const ny = e.clientY / window.innerHeight - 0.5;
           rx(nx * 30);
           ry(-ny * 24);
           x(nx * 30);
+          chefX(nx * -15);
+          chefY(ny * -10);
         };
         window.addEventListener("pointermove", move);
         return () => window.removeEventListener("pointermove", move);
       });
       mm.add("(prefers-reduced-motion: no-preference)", () => {
         gsap.from(dish.current, { y: 120, rotate: -25, autoAlpha: 0, duration: 1.1, ease: "power4.out", delay: 1.4 });
+        gsap.from("[data-chef-eddie]", { y: 80, scale: 0.88, autoAlpha: 0, duration: 1.0, ease: "back.out(1.6)", delay: 1.6 });
         // Copy waits until E.D. opens up, so nothing competes with the E.D. moment (D40).
         gsap.from("[data-hero-copy]", { y: 24, autoAlpha: 0, duration: 0.6, stagger: 0.1, delay: LOGO_REVEAL_AT + 0.3 });
       });
@@ -87,7 +92,7 @@ export function Hero({ kitchenOpen, nextOpen = null }: { kitchenOpen: boolean; n
           )}
         </div>
 
-        {/* The gold arch — the one bold color field — frames only the dish, never the text. */}
+        {/* The gold arch — the one bold color field — frames the dish and Chef Eddie */}
         <div className="relative mx-auto grid h-[25rem] w-[19rem] place-items-center rounded-t-full bg-gold sm:h-[32rem] sm:w-[25rem]">
           <div className="h-64 w-64 [perspective:900px] sm:h-80 sm:w-80">
             {/* Porthole: the photo fades to transparent at its edges (crop-menu.md), so it melts into the ink plate. */}
@@ -95,11 +100,27 @@ export function Hero({ kitchenOpen, nextOpen = null }: { kitchenOpen: boolean; n
               <Image src="/images/sweet-heat.webp" alt="The Sweet Heat: hot honey chicken on a waffle" fill sizes="(min-width:640px) 20rem, 16rem" loading="eager" fetchPriority="high" className="scale-110 object-cover" />
             </div>
           </div>
-          <div className="absolute -bottom-8 -left-8 h-28 w-28 sm:h-36 sm:w-36">
+
+          {/* Chef Eddie Character Illustration */}
+          <div
+            data-chef-eddie
+            className="pointer-events-none absolute -bottom-6 -left-10 z-20 w-44 drop-shadow-[0_15px_25px_rgba(0,0,0,0.6)] sm:-bottom-8 sm:-left-16 sm:w-60 lg:-bottom-10 lg:-left-20 lg:w-64"
+          >
+            <Image
+              src="/images/chef-eddie.webp"
+              alt="Chef Eddie in his custom E.D. apron and white cap"
+              width={768}
+              height={1024}
+              priority
+              className="h-auto w-full object-contain"
+            />
+          </div>
+
+          <div className="absolute -bottom-8 -right-6 z-30 h-24 w-24 sm:-bottom-10 sm:-right-8 sm:h-32 sm:w-32">
             <Sticker />
           </div>
-          <span className="absolute -right-3 top-16 rotate-6 rounded-md bg-ink px-3 py-1 font-brush text-2xl text-gold">$12</span>
-          <span className="absolute bottom-4 right-6 max-w-[9rem] rotate-[-4deg] text-right font-display text-sm uppercase leading-tight text-ink">
+          <span className="absolute -right-3 top-16 z-30 rotate-6 rounded-md bg-ink px-3 py-1 font-brush text-2xl text-gold shadow-md">$12</span>
+          <span className="absolute bottom-4 right-6 z-10 max-w-[9rem] rotate-[-4deg] text-right font-display text-sm uppercase leading-tight text-ink">
             The Sweet Heat · hot honey chicken + waffle
           </span>
         </div>
