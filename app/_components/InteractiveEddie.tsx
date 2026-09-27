@@ -80,23 +80,31 @@ export function InteractiveEddie() {
   const lastXRef = useRef<number>(0);
   const tiltVelocityRef = useRef<number>(0);
 
-  const showSpeech = useCallback((text: string, duration = 2400) => {
+  // Thought bubble duration: stays up longer + scales dynamically for longer sentences
+  const showSpeech = useCallback((text: string, extraMs = 0) => {
     if (speechTimeoutRef.current) clearTimeout(speechTimeoutRef.current);
     setSpeech(text);
+
+    // Dynamic duration: base 3200ms (extra half-sec) + 1200ms for longer quotes
+    const duration = 3200 + (text.length > 25 ? 1200 : 0) + extraMs;
     speechTimeoutRef.current = setTimeout(() => {
       setSpeech(null);
     }, duration);
   }, []);
 
-  // Handle single Click / Poke
+  // Handle single Click / Poke: switches between sitting and standing every time
   const handlePoke = useCallback(() => {
     // 1. Pick next quote sequentially from the 10 options
     const quoteIndex = clickCountRef.current % CLICK_PHRASES.length;
     clickCountRef.current += 1;
     const phrase = CLICK_PHRASES[quoteIndex];
-    showSpeech(phrase, 2600);
+    showSpeech(phrase);
 
-    // 2. Switch to Airborne pose for 500ms, then revert back to whatever rest pose he was in
+    // 2. Determine the next resting pose (alternates standing <-> sitting on EVERY poke)
+    const nextRestPose: RestPose = restPose === "standing" ? "sitting" : "standing";
+    setRestPose(nextRestPose);
+
+    // 3. Flinch to Airborne pose for 500ms, then settle into the new rest pose!
     setActivePose("airborne");
 
     if (containerRef.current) {
@@ -116,15 +124,23 @@ export function InteractiveEddie() {
 
     if (pokeTimerRef.current) clearTimeout(pokeTimerRef.current);
     pokeTimerRef.current = setTimeout(() => {
-      // Revert back to the current resting pose (standing or sitting)
-      setActivePose(restPose);
+      // Settle into the alternate pose
+      setActivePose(nextRestPose);
+      if (containerRef.current) {
+        gsap.fromTo(
+          containerRef.current,
+          { scaleY: 0.9, scaleX: 1.05 },
+          { scaleY: 1, scaleX: 1, duration: 0.4, ease: "back.out(1.6)" }
+        );
+      }
     }, 500);
   }, [restPose, showSpeech]);
 
   // Pointer Down (Start potential click or drag)
   const onPointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
-    if (e.button !== 0) return; // Only left click
-    e.preventDefault();
+    // Don't intercept clicks/taps on the reset button
+    if ((e.target as HTMLElement).closest("[data-reset-btn]")) return;
+    if (e.button !== 0) return; // Only left click / primary touch
 
     const rect = containerRef.current?.getBoundingClientRect();
     if (!rect) return;
@@ -163,7 +179,7 @@ export function InteractiveEddie() {
         // Pick drag quote
         const dragQuote = DRAG_PHRASES[dragCountRef.current % DRAG_PHRASES.length];
         dragCountRef.current += 1;
-        showSpeech(dragQuote, 2000);
+        showSpeech(dragQuote);
       }
 
       if (dragInfoRef.current.hasMoved) {
@@ -189,13 +205,15 @@ export function InteractiveEddie() {
       }
     };
 
-    const onPointerUp = () => {
+    const onPointerUp = (e: PointerEvent) => {
       if (!dragInfoRef.current.active) return;
       dragInfoRef.current.active = false;
 
       if (!dragInfoRef.current.hasMoved) {
-        // Was a clean click / poke
-        handlePoke();
+        // Was a clean click / poke (if not tapping reset button)
+        if (!(e.target as HTMLElement)?.closest("[data-reset-btn]")) {
+          handlePoke();
+        }
       } else {
         // Was a drag release / drop
         setIsDragging(false);
@@ -208,7 +226,7 @@ export function InteractiveEddie() {
         // Drop speech
         const dropQuote = DROP_PHRASES[dropCountRef.current % DROP_PHRASES.length];
         dropCountRef.current += 1;
-        showSpeech(dropQuote, 2200);
+        showSpeech(dropQuote);
 
         if (containerRef.current) {
           // Satisfying squash & stretch landing bounce
@@ -238,13 +256,19 @@ export function InteractiveEddie() {
     };
   }, [handlePoke, restPose, showSpeech]);
 
-  // Reset back to Hero arch
-  const resetHome = (e: React.MouseEvent) => {
-    e.stopPropagation();
+  // Reset back to Hero arch (works reliably on touch & click)
+  const resetHome = useCallback((e?: React.SyntheticEvent | Event) => {
+    if (e) {
+      e.stopPropagation();
+      if ("preventDefault" in e) e.preventDefault();
+    }
+    dragInfoRef.current.active = false;
+    setIsDragging(false);
     setIsFixed(false);
     setActivePose("standing");
     setRestPose("standing");
-    showSpeech("Back home in the arch! 🏠", 2000);
+    showSpeech("Back home in the arch! 🏠", 400);
+
     if (containerRef.current) {
       gsap.fromTo(
         containerRef.current,
@@ -252,7 +276,7 @@ export function InteractiveEddie() {
         { scale: 1, rotate: 0, duration: 0.6, ease: "back.out(1.7)" }
       );
     }
-  };
+  }, [showSpeech]);
 
   useEffect(() => {
     return () => {
@@ -295,7 +319,7 @@ export function InteractiveEddie() {
     >
       {/* Speech Bubble */}
       {speech && (
-        <div className="pointer-events-none absolute -top-14 left-1/2 -translate-x-1/2 z-50 whitespace-nowrap rounded-2xl bg-ink/95 px-4 py-2 font-display text-sm uppercase tracking-wider text-gold shadow-2xl ring-2 ring-gold/60 animate-in fade-in zoom-in duration-150">
+        <div className="pointer-events-none absolute -top-14 left-1/2 -translate-x-1/2 z-50 max-w-[280px] sm:max-w-xs text-center rounded-2xl bg-ink/95 px-4 py-2 font-display text-sm uppercase tracking-wider text-gold shadow-2xl ring-2 ring-gold/60 animate-in fade-in zoom-in duration-150">
           {speech}
           <div className="absolute -bottom-1.5 left-1/2 h-3 w-3 -translate-x-1/2 rotate-45 bg-ink ring-b ring-r ring-gold/60" />
         </div>
@@ -311,8 +335,19 @@ export function InteractiveEddie() {
       {/* Return Home Button (visible when moved from original arch) */}
       {isFixed && (
         <button
+          data-reset-btn
+          type="button"
           onClick={resetHome}
-          className="absolute -right-2 -top-2 z-50 flex h-7 w-7 items-center justify-center rounded-full bg-ink font-display text-xs font-bold text-gold shadow-xl ring-2 ring-gold hover:bg-gold hover:text-ink transition-colors"
+          onPointerDown={(e) => {
+            e.stopPropagation();
+            resetHome(e);
+          }}
+          onTouchEnd={(e) => {
+            e.stopPropagation();
+            e.preventDefault();
+            resetHome(e);
+          }}
+          className="absolute -right-2 -top-2 z-50 flex h-9 w-9 sm:h-8 sm:w-8 items-center justify-center rounded-full bg-ink font-display text-sm font-bold text-gold shadow-2xl ring-2 ring-gold active:scale-90 hover:bg-gold hover:text-ink transition-all cursor-pointer"
           title="Return Eddie to Hero arch"
           aria-label="Return Eddie to Hero arch"
         >
