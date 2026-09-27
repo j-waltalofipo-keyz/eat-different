@@ -42,7 +42,7 @@ export function Sheet({
           type="button"
           onClick={onClose}
           aria-label="Close"
-          className="absolute right-4 top-4 grid h-11 w-11 place-items-center rounded-full bg-cream/10 text-2xl leading-none hover:bg-cream/20"
+          className="absolute right-4 top-4 z-40 grid h-10 w-10 place-items-center rounded-full bg-cream/15 text-2xl leading-none hover:bg-cream/25 active:scale-95 transition-all"
         >
           ×
         </button>

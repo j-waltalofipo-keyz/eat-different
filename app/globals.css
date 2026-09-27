@@ -36,3 +36,10 @@ body {
   from { opacity: 0; transform: translateY(8px); }
   to { opacity: 1; transform: none; }
 }
+
+/* Hide interactive character while any modal/sheet is open so it never obstructs options or buttons */
+body:has(dialog[open]) [data-chef-eddie] {
+  opacity: 0 !important;
+  pointer-events: none !important;
+  transition: opacity 0.2s ease;
+}
