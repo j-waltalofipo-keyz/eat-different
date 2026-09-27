@@ -5,6 +5,7 @@ import gsap from "gsap";
 import Image from "next/image";
 import { useRef } from "react";
 import { Logo, LOGO_REVEAL_AT } from "./Logo";
+import { InteractiveEddie } from "./InteractiveEddie";
 
 gsap.registerPlugin(useGSAP);
 
@@ -36,16 +37,12 @@ export function Hero({ kitchenOpen, nextOpen = null }: { kitchenOpen: boolean; n
         const rx = gsap.quickTo(dish.current, "rotationY", { duration: 0.6, ease: "power3" });
         const ry = gsap.quickTo(dish.current, "rotationX", { duration: 0.6, ease: "power3" });
         const x = gsap.quickTo(dish.current, "x", { duration: 0.8, ease: "power3" });
-        const chefX = gsap.quickTo("[data-chef-eddie]", "x", { duration: 0.9, ease: "power2" });
-        const chefY = gsap.quickTo("[data-chef-eddie]", "y", { duration: 0.9, ease: "power2" });
         const move = (e: PointerEvent) => {
           const nx = e.clientX / window.innerWidth - 0.5;
           const ny = e.clientY / window.innerHeight - 0.5;
           rx(nx * 30);
           ry(-ny * 24);
           x(nx * 30);
-          chefX(nx * -15);
-          chefY(ny * -10);
         };
         window.addEventListener("pointermove", move);
         return () => window.removeEventListener("pointermove", move);
@@ -101,20 +98,8 @@ export function Hero({ kitchenOpen, nextOpen = null }: { kitchenOpen: boolean; n
             </div>
           </div>
 
-          {/* Chef Eddie Character Illustration */}
-          <div
-            data-chef-eddie
-            className="pointer-events-none absolute -bottom-6 -left-10 z-20 w-44 drop-shadow-[0_15px_25px_rgba(0,0,0,0.6)] sm:-bottom-8 sm:-left-16 sm:w-60 lg:-bottom-10 lg:-left-20 lg:w-64"
-          >
-            <Image
-              src="/images/chef-eddie.webp"
-              alt="Chef Eddie in his custom E.D. apron and white cap"
-              width={768}
-              height={1024}
-              priority
-              className="h-auto w-full object-contain"
-            />
-          </div>
+          {/* Interactive Chef Eddie Character Illustration */}
+          <InteractiveEddie />
 
           <div className="absolute -bottom-8 -right-6 z-30 h-24 w-24 sm:-bottom-10 sm:-right-8 sm:h-32 sm:w-32">
             <Sticker />
