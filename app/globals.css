@@ -38,7 +38,8 @@ body {
 }
 
 /* Hide interactive character while any modal/sheet is open so it never obstructs options or buttons */
-body:has(dialog[open]) [data-chef-eddie] {
+body:has(dialog[open]) [data-chef-eddie],
+body[data-sheet-open="true"] [data-chef-eddie] {
   opacity: 0 !important;
   pointer-events: none !important;
   transition: opacity 0.2s ease;
