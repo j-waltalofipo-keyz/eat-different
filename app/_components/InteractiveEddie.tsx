@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useRef, useEffect, useCallback } from "react";
 import Image from "next/image";
+import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 
 type RestPose = "standing" | "sitting";
@@ -43,10 +44,11 @@ const DROP_PHRASES = [
 ];
 
 export function InteractiveEddie() {
-  const [activePose, setActivePose] = useState<ActivePose>("standing");
+  const [activePose, setActivePose] = useState<ActivePose>("airborne");
   const [restPose, setRestPose] = useState<RestPose>("standing");
   const [isDragging, setIsDragging] = useState(false);
   const [speech, setSpeech] = useState<string | null>(null);
+  const [hasLandedInitially, setHasLandedInitially] = useState(false);
 
   // Position state when dragged
   const [isFixed, setIsFixed] = useState(false);
@@ -80,19 +82,68 @@ export function InteractiveEddie() {
   const lastXRef = useRef<number>(0);
   const tiltVelocityRef = useRef<number>(0);
 
-  // Thought bubble duration: stays up longer + scales dynamically for longer sentences
+  // Dynamic speech bubble timer
   const showSpeech = useCallback((text: string, extraMs = 0) => {
     if (speechTimeoutRef.current) clearTimeout(speechTimeoutRef.current);
     setSpeech(text);
 
-    // Dynamic duration: base 3200ms (extra half-sec) + 1200ms for longer quotes
-    const duration = 3200 + (text.length > 25 ? 1200 : 0) + extraMs;
+    // Dynamic duration: base 3400ms + extra time for long quotes
+    const duration = 3400 + (text.length > 25 ? 1400 : 0) + extraMs;
     speechTimeoutRef.current = setTimeout(() => {
       setSpeech(null);
     }, duration);
   }, []);
 
-  // Handle single Click / Poke: switches between sitting and standing every time
+  // Grand Entrance Animation: Delayed until after E.D. -> Eat Different reveals (~3.7s)
+  useGSAP(
+    () => {
+      const mm = gsap.matchMedia();
+      mm.add("(prefers-reduced-motion: no-preference)", () => {
+        // Start hidden, small, spun back
+        gsap.set(containerRef.current, {
+          autoAlpha: 0,
+          scale: 0.1,
+          rotate: -360,
+          y: -80,
+        });
+
+        // Entrance timeline: starts at 3.7s right as "Eat. Different." finishes expanding
+        gsap.timeline({ delay: 3.7 })
+          .to(containerRef.current, {
+            autoAlpha: 1,
+            scale: 1,
+            rotate: 0,
+            y: 0,
+            duration: 1.1,
+            ease: "back.out(1.4)",
+            onComplete: () => {
+              // Switch upon landing to resting standing pose!
+              setActivePose("standing");
+              setHasLandedInitially(true);
+              showSpeech("Talofa! Let's cook! 👨‍🍳🔥");
+
+              // Squash & stretch landing bounce
+              if (containerRef.current) {
+                gsap.fromTo(
+                  containerRef.current,
+                  { scaleY: 0.82, scaleX: 1.15 },
+                  { scaleY: 1, scaleX: 1, duration: 0.55, ease: "elastic.out(1.3, 0.4)" }
+                );
+              }
+            },
+          });
+      });
+
+      mm.add("(prefers-reduced-motion: reduce)", () => {
+        gsap.set(containerRef.current, { autoAlpha: 1, scale: 1, rotate: 0, y: 0 });
+        setActivePose("standing");
+        setHasLandedInitially(true);
+      });
+    },
+    { scope: containerRef }
+  );
+
+  // Handle single Click / Poke: switches between sitting and standing on every tap
   const handlePoke = useCallback(() => {
     // 1. Pick next quote sequentially from the 10 options
     const quoteIndex = clickCountRef.current % CLICK_PHRASES.length;
@@ -100,15 +151,14 @@ export function InteractiveEddie() {
     const phrase = CLICK_PHRASES[quoteIndex];
     showSpeech(phrase);
 
-    // 2. Determine the next resting pose (alternates standing <-> sitting on EVERY poke)
+    // 2. Determine the next resting pose (alternates standing <-> sitting)
     const nextRestPose: RestPose = restPose === "standing" ? "sitting" : "standing";
     setRestPose(nextRestPose);
 
-    // 3. Flinch to Airborne pose for 500ms, then settle into the new rest pose!
+    // 3. Flinch to Airborne pose for 500ms, then settle into the new rest pose
     setActivePose("airborne");
 
     if (containerRef.current) {
-      // Fun jiggle/bounce reaction
       gsap.fromTo(
         containerRef.current,
         { scale: 0.9, rotate: -8, y: -10 },
@@ -124,7 +174,6 @@ export function InteractiveEddie() {
 
     if (pokeTimerRef.current) clearTimeout(pokeTimerRef.current);
     pokeTimerRef.current = setTimeout(() => {
-      // Settle into the alternate pose
       setActivePose(nextRestPose);
       if (containerRef.current) {
         gsap.fromTo(
@@ -229,7 +278,6 @@ export function InteractiveEddie() {
         showSpeech(dropQuote);
 
         if (containerRef.current) {
-          // Satisfying squash & stretch landing bounce
           gsap.fromTo(
             containerRef.current,
             { scaleY: 0.8, scaleX: 1.15, rotate: 0 },
@@ -256,7 +304,7 @@ export function InteractiveEddie() {
     };
   }, [handlePoke, restPose, showSpeech]);
 
-  // Reset back to Hero arch (works reliably on touch & click)
+  // Reset back to Hero arch
   const resetHome = useCallback((e?: React.SyntheticEvent | Event) => {
     if (e) {
       e.stopPropagation();
@@ -317,22 +365,23 @@ export function InteractiveEddie() {
         }
       }}
     >
-      {/* Speech Bubble */}
+      {/* Speech / Thought Bubble (Positioned safely ABOVE his head so multi-line text expands upwards) */}
       {speech && (
-        <div className="pointer-events-none absolute -top-14 left-1/2 -translate-x-1/2 z-50 max-w-[280px] sm:max-w-xs text-center rounded-2xl bg-ink/95 px-4 py-2 font-display text-sm uppercase tracking-wider text-gold shadow-2xl ring-2 ring-gold/60 animate-in fade-in zoom-in duration-150">
+        <div className="pointer-events-none absolute bottom-[100%] left-1/2 -translate-x-1/2 mb-4 sm:mb-6 z-50 w-max max-w-[280px] sm:max-w-xs text-center rounded-2xl bg-ink/95 px-4 py-2.5 font-display text-sm uppercase tracking-wider text-gold shadow-[0_15px_30px_rgba(0,0,0,0.8)] ring-2 ring-gold/60 animate-in fade-in zoom-in duration-150">
           {speech}
+          {/* Arrow pointing down to Eddie's cap */}
           <div className="absolute -bottom-1.5 left-1/2 h-3 w-3 -translate-x-1/2 rotate-45 bg-ink ring-b ring-r ring-gold/60" />
         </div>
       )}
 
-      {/* Floating Initial Help Badge */}
-      {!isFixed && (
-        <div className="pointer-events-none absolute -top-9 left-2 flex items-center gap-1.5 rounded-full bg-gold px-3 py-1 font-display text-xs uppercase tracking-wider text-ink shadow-lg transition-transform group-hover:scale-110">
+      {/* Floating Initial Help Badge (Appears only after Eddie lands) */}
+      {!isFixed && hasLandedInitially && (
+        <div className="pointer-events-none absolute -top-10 left-2 flex items-center gap-1.5 rounded-full bg-gold px-3 py-1 font-display text-xs uppercase tracking-wider text-ink shadow-lg transition-transform group-hover:scale-110">
           <span>👆 Poke or Drag Me!</span>
         </div>
       )}
 
-      {/* Return Home Button (visible when moved from original arch) */}
+      {/* Return Home Button */}
       {isFixed && (
         <button
           data-reset-btn

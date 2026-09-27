@@ -49,7 +49,6 @@ export function Hero({ kitchenOpen, nextOpen = null }: { kitchenOpen: boolean; n
       });
       mm.add("(prefers-reduced-motion: no-preference)", () => {
         gsap.from(dish.current, { y: 120, rotate: -25, autoAlpha: 0, duration: 1.1, ease: "power4.out", delay: 1.4 });
-        gsap.from("[data-chef-eddie]", { y: 80, scale: 0.88, autoAlpha: 0, duration: 1.0, ease: "back.out(1.6)", delay: 1.6 });
         // Copy waits until E.D. opens up, so nothing competes with the E.D. moment (D40).
         gsap.from("[data-hero-copy]", { y: 24, autoAlpha: 0, duration: 0.6, stagger: 0.1, delay: LOGO_REVEAL_AT + 0.3 });
       });
